@@ -551,6 +551,8 @@
     }
     .testimonial-slide {
       min-width: 100%;
+      width: 100%;
+      flex-shrink: 0;
       opacity: 0.3;
       transform: scale(0.95);
       transition: opacity 0.6s ease, transform 0.6s ease;
@@ -1126,7 +1128,7 @@
       <div class="corruption-bar my-16 fade-up"></div>
 
       <!-- Image + Testimonial Slider -->
-      <div class="grid md:grid-cols-2 gap-8 items-center">
+      <div class="grid md:grid-cols-2 gap-8 items-center overflow-hidden">
         <!-- HUD-framed image -->
         <div class="fade-up">
           <div class="relative rounded-2xl overflow-hidden border border-red-500/10 group">
@@ -1149,7 +1151,7 @@
         </div>
 
         <!-- Testimonial Slider -->
-        <div class="fade-up fade-up-delay-1">
+        <div class="fade-up fade-up-delay-1 min-w-0 overflow-hidden">
           <div class="relative">
             <!-- Slider header -->
             <div class="flex items-center gap-3 mb-5">
@@ -1166,7 +1168,7 @@
 
                 <!-- Testimonial 1 -->
                 <div class="testimonial-slide active p-1">
-                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-7 border border-white/[0.06] backdrop-blur-sm">
+                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-5 md:p-7 border border-white/[0.06] backdrop-blur-sm">
                     <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-red-500/30 via-transparent to-transparent"></div>
                     <p class="text-gray-300 text-[15px] italic leading-relaxed mb-6">
                       "We re-correct our AI assistant on the same wrong port number three times a week. It's like training a new employee who forgets everything overnight."
@@ -1183,7 +1185,7 @@
 
                 <!-- Testimonial 2 -->
                 <div class="testimonial-slide p-1">
-                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-7 border border-white/[0.06] backdrop-blur-sm">
+                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-5 md:p-7 border border-white/[0.06] backdrop-blur-sm">
                     <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-amber-500/30 via-transparent to-transparent"></div>
                     <p class="text-gray-300 text-[15px] italic leading-relaxed mb-6">
                       "Our AI spend tripled in six months. Every query ships 40 pages of context and the model still hallucinates because the answer was buried on page 23."
@@ -1200,7 +1202,7 @@
 
                 <!-- Testimonial 3 -->
                 <div class="testimonial-slide p-1">
-                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-7 border border-white/[0.06] backdrop-blur-sm">
+                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-5 md:p-7 border border-white/[0.06] backdrop-blur-sm">
                     <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-orange-500/30 via-transparent to-transparent"></div>
                     <p class="text-gray-300 text-[15px] italic leading-relaxed mb-6">
                       "After a compliance audit, we were asked to prove which data the AI used for a critical decision. We couldn't. That's when we realized RAG alone isn't enterprise-grade."
@@ -1217,7 +1219,7 @@
 
                 <!-- Testimonial 4 -->
                 <div class="testimonial-slide p-1">
-                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-7 border border-white/[0.06] backdrop-blur-sm">
+                  <blockquote class="relative bg-gradient-to-br from-dark-700/60 to-dark-800/60 rounded-2xl p-5 md:p-7 border border-white/[0.06] backdrop-blur-sm">
                     <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-purple-500/30 via-transparent to-transparent"></div>
                     <p class="text-gray-300 text-[15px] italic leading-relaxed mb-6">
                       "We built our own memory layer. 6 months and 3 engineers later, it still can't handle corrections without reindexing the entire knowledge base."
@@ -1685,8 +1687,8 @@
       </div>
 
       <!-- Architecture 3D Memory Layers -->
-      <div class="max-w-3xl mx-auto mb-16 fade-up relative" style="height: 420px;">
-        <canvas id="arch-canvas" class="rounded-2xl w-full h-full" style="display:block;"></canvas>
+      <div class="max-w-3xl mx-auto mb-16 fade-up relative aspect-[16/10] md:aspect-[16/9]" id="arch-canvas-wrapper">
+        <canvas id="arch-canvas" class="rounded-2xl absolute inset-0 w-full h-full" style="display:block;"></canvas>
       </div>
 
       <!-- Architecture diagram -->
@@ -3407,15 +3409,22 @@
     // ============================================================
     (function initArch() {
       const canvas = document.getElementById('arch-canvas');
-      if (!canvas) return;
+      const wrapper = document.getElementById('arch-canvas-wrapper');
+      if (!canvas || !wrapper) return;
 
       const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(50, canvas.clientWidth / canvas.clientHeight, 0.1, 100);
-      camera.position.set(3, 2.5, 5);
+
+      // Use wrapper dimensions for proper sizing
+      const w = wrapper.clientWidth;
+      const h = wrapper.clientHeight;
+      const camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 100);
+      // Center the camera — pull back more on mobile so all layers are visible
+      const camZ = isMobile ? 7 : 5.5;
+      camera.position.set(isMobile ? 1.5 : 2.5, 2, camZ);
       camera.lookAt(0, 0, 0);
 
       const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-      renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+      renderer.setSize(w, h);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
       // 4 memory substrate layers
@@ -3428,9 +3437,13 @@
       const layerLabels = ['M_a Active', 'M_s Semantic', 'M_r Raw', 'M_meta Audit'];
       const layerY = [1.5, 0.5, -0.5, -1.5];
 
+      // Scale down geometry on mobile
+      const planeW = isMobile ? 3 : 4;
+      const planeH = isMobile ? 2 : 2.5;
+
       const layers = [];
       layerColors.forEach((col, i) => {
-        const geo = new THREE.PlaneGeometry(4, 2.5, 8, 8);
+        const geo = new THREE.PlaneGeometry(planeW, planeH, 8, 8);
         const mat = new THREE.MeshBasicMaterial({
           color: col,
           transparent: true,
@@ -3457,7 +3470,8 @@
         scene.add(wire);
 
         // Edge glow ring
-        const ringGeo = new THREE.RingGeometry(1.6, 1.8, 32);
+        const ringR = isMobile ? 1.2 : 1.6;
+        const ringGeo = new THREE.RingGeometry(ringR, ringR + 0.2, 32);
         const ringMat = new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.15, side: THREE.DoubleSide });
         const ring = new THREE.Mesh(ringGeo, ringMat);
         ring.rotation.x = -Math.PI / 2;
@@ -3474,10 +3488,11 @@
       const pSpeeds = new Float32Array(particleCount);
       const pTargets = new Float32Array(particleCount); // target layer index
 
+      const pSpread = isMobile ? 2 : 3;
       for (let i = 0; i < particleCount; i++) {
-        pPositions[i * 3] = (Math.random() - 0.5) * 3;
+        pPositions[i * 3] = (Math.random() - 0.5) * pSpread;
         pPositions[i * 3 + 1] = layerY[Math.floor(Math.random() * 4)];
-        pPositions[i * 3 + 2] = (Math.random() - 0.5) * 2;
+        pPositions[i * 3 + 2] = (Math.random() - 0.5) * (pSpread * 0.7);
         const li = Math.floor(Math.random() * 4);
         pColors[i * 3] = layerColors[li].r;
         pColors[i * 3 + 1] = layerColors[li].g;
@@ -3549,9 +3564,11 @@
       requestAnimationFrame(animate);
 
       window.addEventListener('resize', () => {
-        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        const rw = wrapper.clientWidth;
+        const rh = wrapper.clientHeight;
+        camera.aspect = rw / rh;
         camera.updateProjectionMatrix();
-        renderer.setSize(canvas.clientWidth, canvas.clientHeight);
+        renderer.setSize(rw, rh);
       });
     })();
 
