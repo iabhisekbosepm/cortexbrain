@@ -2720,97 +2720,132 @@
   </section>
 
   <!-- ===================== REST API ===================== -->
-  <section id="api" class="relative py-24 md:py-32 bg-dark-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 fade-up">
-        <span class="inline-block px-3 py-1 text-xs font-mono font-medium text-brand-300 bg-brand-500/10 border border-brand-500/20 rounded-full mb-4">REST API</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-          Integrate With <span class="text-gradient">Any Application</span>
+  <section id="api" class="relative py-24 md:py-32 bg-dark-900 overflow-hidden">
+    <!-- Subtle grid background -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(16,185,129,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(16,185,129,0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="text-center mb-20">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-sm font-medium mb-6 fade-up">
+          <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+          <span class="font-mono text-[11px] tracking-wider uppercase">API Gateway Online</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 fade-up fade-up-delay-1">
+          Integrate With<br/>
+          <span class="text-gradient" style="text-shadow: 0 0 40px rgba(196,104,73,0.3), 0 0 80px rgba(196,104,73,0.1);">Any Application</span>
         </h2>
-        <p class="text-lg text-gray-400 max-w-3xl mx-auto">
-          CortexBrain exposes a full REST API. Add persistent, auditable AI knowledge to your Slack bot, internal tools, mobile app, or any service.
+        <div class="corruption-bar max-w-xs mx-auto my-5 fade-up fade-up-delay-1" style="background: linear-gradient(90deg, transparent, rgba(16,185,129,0.5), transparent);"></div>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto fade-up fade-up-delay-2">
+          Full REST API with Bearer auth. Add persistent, auditable AI knowledge to your Slack bot, internal tools, mobile app, or any service.
         </p>
       </div>
 
-      <!-- API visual -->
-      <div class="tilt-card max-w-3xl mx-auto mb-16 fade-up" style="--accent-glow: rgba(196,104,73,0.3);">
-        <div class="tilt-card-inner rounded-2xl overflow-hidden border border-white/[0.06]">
-          <img src="images/api-endpoints.png" alt="REST API architecture — central server hexagon connected to mobile, web, chat and terminal clients" class="w-full" />
+      <!-- API visual with HUD frame -->
+      <div class="relative max-w-3xl mx-auto mb-20 fade-up">
+        <!-- HUD corner brackets -->
+        <div class="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-emerald-500/40 rounded-tl-sm z-10"></div>
+        <div class="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-emerald-500/40 rounded-tr-sm z-10"></div>
+        <div class="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-emerald-500/40 rounded-bl-sm z-10"></div>
+        <div class="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-emerald-500/40 rounded-br-sm z-10"></div>
+        <!-- HUD label -->
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 bg-dark-900 border border-emerald-500/20 rounded text-[10px] font-mono text-emerald-400/70 tracking-widest uppercase">API Gateway</div>
+
+        <div class="tilt-card" style="--accent-glow: rgba(16,185,129,0.3);">
+          <div class="tilt-card-inner rounded-2xl overflow-hidden border border-white/[0.06]">
+            <img src="images/api-endpoints.png" alt="REST API architecture — central server hexagon connected to mobile, web, chat and terminal clients" class="w-full" />
+          </div>
+        </div>
+
+        <!-- Endpoint stats bar below image -->
+        <div class="mt-4 bg-dark-800/60 rounded-lg border border-white/[0.04] p-3 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+            <span class="text-[10px] font-mono text-emerald-400/70 uppercase tracking-wider">9 Endpoints Live</span>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="text-[10px] font-mono text-gray-500">Latency <span class="text-emerald-400">&lt;1s p95</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Auth <span class="text-amber-400">Bearer</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Format <span class="text-blue-400">JSON</span></span>
+          </div>
         </div>
       </div>
 
-      <div class="grid lg:grid-cols-2 gap-8">
+      <div class="grid lg:grid-cols-2 gap-6">
         <!-- Core Endpoints -->
         <div class="tilt-card fade-up" style="--accent-glow: rgba(196,104,73,0.3);">
-          <div class="tilt-card-inner relative rounded-2xl border border-white/[0.06] bg-gradient-to-br from-dark-700/60 to-dark-800/80 overflow-hidden backdrop-blur-sm">
+          <div class="tilt-card-inner relative rounded-2xl border border-brand-500/[0.08] bg-gradient-to-br from-dark-700/80 via-dark-700/50 to-dark-800/80 overflow-hidden backdrop-blur-sm p-7 h-full">
             <div class="accent-bar bg-gradient-to-b from-brand-400 to-brand-600"></div>
-            <div class="p-6 pl-5">
-              <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-brand-500/10 border border-brand-500/20 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
+            <div class="pl-3">
+              <!-- Status header -->
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-xl bg-brand-500/10 border border-brand-500/15 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2"/></svg>
                 </div>
-                Core Endpoints
-              </h3>
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-brand-500/8 border border-brand-500/10">
+                  <span class="w-1.5 h-1.5 bg-brand-400 rounded-full status-blink"></span>
+                  <span class="text-[10px] font-mono text-brand-400/70 uppercase tracking-wider">4 Routes</span>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-5">Core Endpoints</h3>
               <div class="space-y-3">
                 <!-- Query -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
+                <div class="bg-dark-900/50 rounded-xl p-4 border border-white/[0.04]">
                   <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">POST</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/15 uppercase tracking-wider">POST</span>
                     <code class="text-sm text-white font-mono">/api/v1/query</code>
                   </div>
                   <p class="text-gray-500 text-xs mb-3">Natural language query with activation-based context selection</p>
-                  <div class="bg-dark-900/80 rounded-lg p-3 font-mono text-xs overflow-x-auto border border-brand-500/10">
-                    <div class="flex items-center gap-1.5 mb-2 pb-2 border-b border-white/5">
-                      <div class="w-2 h-2 rounded-full bg-red-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-amber-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-emerald-500/60"></div>
+                  <div class="bg-dark-900/70 rounded-lg p-3 border border-brand-500/8 font-mono">
+                    <div class="flex items-center gap-2 text-[10px] text-gray-600 mb-2">
+                      <span class="w-2 h-2 rounded-full bg-red-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-amber-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-emerald-500/40"></span>
+                      <span class="ml-1">request / response</span>
                     </div>
-                    <div class="text-gray-600">// Request</div>
-                    <div class="text-gray-400">{ <span class="text-brand-300">"query"</span>: <span class="text-emerald-400">"What port does auth run on?"</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"user_id"</span>: <span class="text-emerald-400">"priya"</span> }</div>
-                    <div class="mt-2 text-gray-600">// Response</div>
-                    <div class="text-gray-400">{ <span class="text-brand-300">"answer"</span>: <span class="text-emerald-400">"Port 3000..."</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"confidence"</span>: <span class="text-emerald-400">"high"</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"confidence_score"</span>: <span class="text-amber-400">0.92</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"sources"</span>: [<span class="text-gray-500">...</span>] }</div>
+                    <div class="text-xs text-gray-600">// Request</div>
+                    <div class="text-xs text-gray-400">{ <span class="text-brand-300">"query"</span>: <span class="text-emerald-400">"What port does auth run on?"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"user_id"</span>: <span class="text-emerald-400">"priya"</span> }</div>
+                    <div class="text-xs mt-2 text-gray-600">// Response</div>
+                    <div class="text-xs text-gray-400">{ <span class="text-brand-300">"answer"</span>: <span class="text-emerald-400">"Port 3000..."</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"confidence"</span>: <span class="text-emerald-400">"high"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"confidence_score"</span>: <span class="text-amber-400">0.92</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"sources"</span>: [<span class="text-gray-500">...</span>] }</div>
                   </div>
                 </div>
 
                 <!-- Correct -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
+                <div class="bg-dark-900/50 rounded-xl p-4 border border-white/[0.04]">
                   <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">POST</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/15 uppercase tracking-wider">POST</span>
                     <code class="text-sm text-white font-mono">/api/v1/correct</code>
                   </div>
                   <p class="text-gray-500 text-xs mb-3">Submit a versioned correction &mdash; permanently updates the knowledge graph</p>
-                  <div class="bg-dark-900/80 rounded-lg p-3 font-mono text-xs overflow-x-auto border border-brand-500/10">
-                    <div class="flex items-center gap-1.5 mb-2 pb-2 border-b border-white/5">
-                      <div class="w-2 h-2 rounded-full bg-red-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-amber-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-emerald-500/60"></div>
+                  <div class="bg-dark-900/70 rounded-lg p-3 border border-brand-500/8 font-mono">
+                    <div class="flex items-center gap-2 text-[10px] text-gray-600 mb-2">
+                      <span class="w-2 h-2 rounded-full bg-red-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-amber-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-emerald-500/40"></span>
+                      <span class="ml-1">payload</span>
                     </div>
-                    <div class="text-gray-400">{ <span class="text-brand-300">"node_id"</span>: <span class="text-emerald-400">"uuid..."</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"corrected_value"</span>: <span class="text-emerald-400">"Port is 3000"</span>,</div>
-                    <div class="text-gray-400 pl-2"><span class="text-brand-300">"reason"</span>: <span class="text-emerald-400">"Updated after migration"</span> }</div>
+                    <div class="text-xs text-gray-400">{ <span class="text-brand-300">"node_id"</span>: <span class="text-emerald-400">"uuid..."</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"corrected_value"</span>: <span class="text-emerald-400">"Port is 3000"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-2"><span class="text-brand-300">"reason"</span>: <span class="text-emerald-400">"Updated after migration"</span> }</div>
                   </div>
                 </div>
 
                 <!-- Ingest -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">POST</span>
-                    <code class="text-sm text-white font-mono">/api/v1/ingest</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">Upload PDF, Markdown, or text. Processed through ECL pipeline into the knowledge graph.</p>
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-emerald-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/15 uppercase tracking-wider">POST</span>
+                  <code class="text-xs text-white font-mono">/api/v1/ingest</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">Upload PDF, Markdown, text</span>
                 </div>
 
                 <!-- Ingest Text -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">POST</span>
-                    <code class="text-sm text-white font-mono">/api/v1/ingest/text</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">Direct text ingestion &mdash; ideal for MCP, CLI, or Slack bots.</p>
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-emerald-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/15 uppercase tracking-wider">POST</span>
+                  <code class="text-xs text-white font-mono">/api/v1/ingest/text</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">Direct text ingestion</span>
                 </div>
               </div>
             </div>
@@ -2819,71 +2854,66 @@
 
         <!-- Audit & Management Endpoints -->
         <div class="tilt-card fade-up fade-up-delay-1" style="--accent-glow: rgba(16,185,129,0.3);">
-          <div class="tilt-card-inner relative rounded-2xl border border-white/[0.06] bg-gradient-to-br from-dark-700/60 to-dark-800/80 overflow-hidden backdrop-blur-sm">
+          <div class="tilt-card-inner relative rounded-2xl border border-emerald-500/[0.08] bg-gradient-to-br from-dark-700/80 via-dark-700/50 to-dark-800/80 overflow-hidden backdrop-blur-sm p-7 h-full">
             <div class="accent-bar bg-gradient-to-b from-emerald-400 to-emerald-600"></div>
-            <div class="p-6 pl-5">
-              <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
-                <div class="w-8 h-8 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
-                  <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <div class="pl-3">
+              <!-- Status header -->
+              <div class="flex items-center justify-between mb-5">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/15 flex items-center justify-center">
+                  <svg class="w-6 h-6 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
                 </div>
-                Audit &amp; Management
-              </h3>
+                <div class="flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/8 border border-emerald-500/10">
+                  <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+                  <span class="text-[10px] font-mono text-emerald-400/70 uppercase tracking-wider">5 Routes</span>
+                </div>
+              </div>
+              <h3 class="text-xl font-bold text-white mb-5">Audit &amp; Management</h3>
               <div class="space-y-3">
                 <!-- History -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
+                <div class="bg-dark-900/50 rounded-xl p-4 border border-white/[0.04]">
                   <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/20">GET</span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/15 uppercase tracking-wider">GET</span>
                     <code class="text-sm text-white font-mono">/api/v1/nodes/{id}/history</code>
                   </div>
                   <p class="text-gray-500 text-xs mb-3">Full audit trail &mdash; every version, every change, every user</p>
-                  <div class="bg-dark-900/80 rounded-lg p-3 font-mono text-xs overflow-x-auto border border-emerald-500/10">
-                    <div class="flex items-center gap-1.5 mb-2 pb-2 border-b border-white/5">
-                      <div class="w-2 h-2 rounded-full bg-red-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-amber-500/60"></div>
-                      <div class="w-2 h-2 rounded-full bg-emerald-500/60"></div>
+                  <div class="bg-dark-900/70 rounded-lg p-3 border border-emerald-500/8 font-mono">
+                    <div class="flex items-center gap-2 text-[10px] text-gray-600 mb-2">
+                      <span class="w-2 h-2 rounded-full bg-red-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-amber-500/40"></span>
+                      <span class="w-2 h-2 rounded-full bg-emerald-500/40"></span>
+                      <span class="ml-1">response</span>
                     </div>
-                    <div class="text-gray-400">[{ <span class="text-brand-300">"version"</span>: <span class="text-amber-400">2</span>, <span class="text-brand-300">"value"</span>: <span class="text-emerald-400">"3000"</span>,</div>
-                    <div class="text-gray-400 pl-3"><span class="text-brand-300">"changed_by"</span>: <span class="text-emerald-400">"user:priya"</span>,</div>
-                    <div class="text-gray-400 pl-3"><span class="text-brand-300">"timestamp"</span>: <span class="text-emerald-400">"2026-03-15T14:32Z"</span> },</div>
-                    <div class="text-gray-400 pl-1">{ <span class="text-brand-300">"version"</span>: <span class="text-amber-400">1</span>, <span class="text-brand-300">"value"</span>: <span class="text-emerald-400">"8080"</span>,</div>
-                    <div class="text-gray-400 pl-3"><span class="text-brand-300">"changed_by"</span>: <span class="text-emerald-400">"system:ingestion"</span> }]</div>
+                    <div class="text-xs text-gray-400">[{ <span class="text-brand-300">"version"</span>: <span class="text-amber-400">2</span>, <span class="text-brand-300">"value"</span>: <span class="text-emerald-400">"3000"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-3"><span class="text-brand-300">"changed_by"</span>: <span class="text-emerald-400">"user:priya"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-3"><span class="text-brand-300">"timestamp"</span>: <span class="text-emerald-400">"2026-03-15T14:32Z"</span> },</div>
+                    <div class="text-xs text-gray-400 pl-1">{ <span class="text-brand-300">"version"</span>: <span class="text-amber-400">1</span>, <span class="text-brand-300">"value"</span>: <span class="text-emerald-400">"8080"</span>,</div>
+                    <div class="text-xs text-gray-400 pl-3"><span class="text-brand-300">"changed_by"</span>: <span class="text-emerald-400">"system:ingestion"</span> }]</div>
                   </div>
                 </div>
 
-                <!-- Health -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/20">GET</span>
-                    <code class="text-sm text-white font-mono">/api/v1/health</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">Real-time health checks for all 5 backing services.</p>
+                <!-- Compact endpoint rows -->
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-blue-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/15 uppercase tracking-wider">GET</span>
+                  <code class="text-xs text-white font-mono">/api/v1/health</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">5-service health check</span>
                 </div>
 
-                <!-- Datasets -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/20">GET</span>
-                    <code class="text-sm text-white font-mono">/api/v1/datasets</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">List all knowledge sources and browse data items.</p>
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-blue-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/15 uppercase tracking-wider">GET</span>
+                  <code class="text-xs text-white font-mono">/api/v1/datasets</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">Browse knowledge sources</span>
                 </div>
 
-                <!-- Consolidation -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-emerald-500/20 text-emerald-400 border border-emerald-500/20">POST</span>
-                    <code class="text-sm text-white font-mono">/api/v1/consolidation/run</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">Trigger memory consolidation &mdash; promote, archive, merge, and compress nodes.</p>
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-emerald-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-emerald-500/15 text-emerald-400 border border-emerald-500/15 uppercase tracking-wider">POST</span>
+                  <code class="text-xs text-white font-mono">/api/v1/consolidation/run</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">Memory consolidation</span>
                 </div>
 
-                <!-- Workers -->
-                <div class="bg-dark-900/60 rounded-xl p-4 border border-white/[0.03]">
-                  <div class="flex items-center gap-3 mb-2">
-                    <span class="px-2 py-0.5 rounded text-xs font-bold bg-blue-500/20 text-blue-400 border border-blue-500/20">GET</span>
-                    <code class="text-sm text-white font-mono">/api/v1/workers/status</code>
-                  </div>
-                  <p class="text-gray-500 text-xs">Monitor background workers, active tasks, and scheduled jobs.</p>
+                <div class="flex items-center gap-2.5 bg-dark-900/40 rounded-lg px-3 py-2.5 border border-blue-500/6">
+                  <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-blue-500/15 text-blue-400 border border-blue-500/15 uppercase tracking-wider">GET</span>
+                  <code class="text-xs text-white font-mono">/api/v1/workers/status</code>
+                  <span class="text-gray-500 text-[11px] ml-auto hidden sm:inline">Monitor background jobs</span>
                 </div>
               </div>
             </div>
@@ -2891,15 +2921,31 @@
         </div>
       </div>
 
-      <!-- Auth note -->
-      <div class="mt-12 text-center fade-up">
-        <div class="tilt-card inline-block" style="--accent-glow: rgba(245,158,11,0.3);">
-          <div class="tilt-card-inner relative inline-flex items-center gap-3 rounded-xl px-6 py-4 border border-white/[0.06] bg-gradient-to-r from-dark-700/80 to-dark-800/80 backdrop-blur-sm text-gray-400 text-sm overflow-hidden">
-            <div class="accent-bar bg-gradient-to-b from-amber-400 to-amber-600"></div>
-            <svg class="w-5 h-5 text-amber-400 flex-shrink-0 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
-            All endpoints require <code class="text-white font-mono text-xs bg-white/5 px-2 py-0.5 rounded mx-1">Bearer token</code> authentication. Responses return in <strong class="text-white">&lt;1s (p95)</strong>.
+      <!-- Auth & security note -->
+      <div class="mt-12 fade-up">
+        <div class="relative max-w-2xl mx-auto">
+          <!-- HUD mini frame -->
+          <div class="absolute -top-1.5 -left-1.5 w-4 h-4 border-t border-l border-amber-500/30 rounded-tl-sm"></div>
+          <div class="absolute -top-1.5 -right-1.5 w-4 h-4 border-t border-r border-amber-500/30 rounded-tr-sm"></div>
+          <div class="absolute -bottom-1.5 -left-1.5 w-4 h-4 border-b border-l border-amber-500/30 rounded-bl-sm"></div>
+          <div class="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b border-r border-amber-500/30 rounded-br-sm"></div>
+
+          <div class="bg-dark-800/60 rounded-xl border border-amber-500/[0.08] p-4 flex items-center gap-4 flex-wrap justify-center">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+              <span class="text-[11px] font-mono text-gray-400"><span class="text-amber-400">Bearer token</span> auth on all routes</span>
+            </div>
+            <span class="text-gray-700 hidden sm:inline">|</span>
+            <span class="text-[11px] font-mono text-gray-400">Response &lt;1s <span class="text-emerald-400">p95</span></span>
+            <span class="text-gray-700 hidden sm:inline">|</span>
+            <span class="text-[11px] font-mono text-gray-400">Full <span class="text-blue-400">OpenAPI</span> spec included</span>
           </div>
         </div>
+      </div>
+
+      <!-- Bottom connector signal -->
+      <div class="relative h-px max-w-2xl mx-auto mt-12">
+        <div class="h-full connector-flow" style="animation-direction: reverse;"></div>
       </div>
     </div>
   </section>
