@@ -172,6 +172,12 @@
       <a href="#consolidation" class="sidebar-link">Memory Consolidation</a>
       <a href="#health" class="sidebar-link">Health Monitoring</a>
 
+      <div class="sidebar-section">Testing</div>
+      <a href="#benchmarks" class="sidebar-link">RAG Benchmarks</a>
+      <a href="#bench-accuracy" class="sidebar-link sidebar-sub">Accuracy Eval</a>
+      <a href="#bench-speed" class="sidebar-link sidebar-sub">Speed Benchmark</a>
+      <a href="#bench-golden" class="sidebar-link sidebar-sub">Golden Dataset</a>
+
       <div class="sidebar-section">Reference</div>
       <a href="#architecture" class="sidebar-link">Architecture</a>
       <a href="#algorithms" class="sidebar-link">Algorithms</a>
@@ -916,6 +922,164 @@ New nodes: default salience <span class="v">0.5</span> for 7-day grace period</d
       <div class="code-body">Every <span class="v">30s</span>: score -= DECAY_RATE (<span class="v">10</span>)
 Evict at <span class="v">0</span> from Redis (Neo4j untouched — no data loss)
 Idle session (>5 min): fully decayed, next query starts fresh</div>
+    </div>
+
+
+    <!-- ====== RAG BENCHMARKS ====== -->
+    <h2 id="benchmarks">RAG Benchmarks</h2>
+    <p>CortexBrain includes a built-in benchmark suite to measure <strong>retrieval accuracy</strong> and <strong>query speed</strong>. Run these after ingesting data to validate your RAG pipeline is performing well.</p>
+
+    <div class="callout callout-info">
+      <svg class="callout-icon" fill="none" stroke="#3b82f6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div><strong style="color:#60a5fa;">Prerequisites:</strong> The CortexBrain API must be running with ingested data. Benchmarks query the live <code>/api/v1/query</code> endpoint. Install <code>httpx</code> if not already available: <code>pip install httpx</code>.</div>
+    </div>
+
+    <h3>Quick Start</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Run accuracy evaluation (20 golden Q&A pairs)</span>
+python3 tests/benchmarks/eval_rag.py
+
+<span class="c"># Run speed benchmark (8 queries x 3 iterations)</span>
+python3 tests/benchmarks/bench_speed.py
+
+<span class="c"># Both save JSON results to tests/benchmarks/</span></div>
+    </div>
+
+    <h3 id="bench-accuracy">Accuracy Evaluation</h3>
+    <p>Measures how well CortexBrain retrieves relevant nodes and generates correct answers. Uses a golden dataset of Q&A pairs with expected sources and keywords.</p>
+
+    <h4>Metrics</h4>
+    <table>
+      <thead><tr><th>Metric</th><th>What It Measures</th><th>Formula</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Recall@K</strong></td><td>% of expected sources found in top K results</td><td>matched &divide; expected</td></tr>
+        <tr><td><strong>Precision@K</strong></td><td>% of top K results that are relevant</td><td>relevant_in_K &divide; K</td></tr>
+        <tr><td><strong>MRR</strong></td><td>How early the first relevant result appears</td><td>1 &divide; rank_of_first_match</td></tr>
+        <tr><td><strong>Keyword Score</strong></td><td>% of expected keywords present in the answer</td><td>found &divide; expected</td></tr>
+        <tr><td><strong>Faithfulness</strong></td><td>Does the answer only use info from context?</td><td>LLM-as-judge (0.0&ndash;1.0)</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CLI Options</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Full evaluation with all metrics</span>
+python3 tests/benchmarks/eval_rag.py
+
+<span class="c"># Skip LLM-as-judge faithfulness scoring (faster, no extra LLM calls)</span>
+python3 tests/benchmarks/eval_rag.py <span class="k">--skip-faithfulness</span>
+
+<span class="c"># Filter by category</span>
+python3 tests/benchmarks/eval_rag.py <span class="k">--category</span> <span class="s">algorithm</span>
+
+<span class="c"># Run specific queries only</span>
+python3 tests/benchmarks/eval_rag.py <span class="k">--ids</span> <span class="s">q01,q05,q13</span>
+
+<span class="c"># Change top-K for retrieval metrics (default: 10)</span>
+python3 tests/benchmarks/eval_rag.py <span class="k">--k</span> <span class="v">5</span>
+
+<span class="c"># Use a custom golden dataset</span>
+python3 tests/benchmarks/eval_rag.py <span class="k">--dataset</span> <span class="s">my_golden.jsonl</span></div>
+    </div>
+
+    <h4>Pass/Fail Threshold</h4>
+    <p>The benchmark <strong>fails</strong> (exit code 1) if average Recall@K &lt; 30% or average keyword match &lt; 30%. This catches major regressions after pipeline changes.</p>
+
+    <h4>Output</h4>
+    <p>Results are printed to the terminal and saved to <code>tests/benchmarks/eval_results.json</code> with per-query breakdowns, aggregate metrics, and confidence calibration analysis.</p>
+
+    <h3 id="bench-speed">Speed Benchmark</h3>
+    <p>Measures end-to-end query latency across varied query types. Reports p50, p95, and p99 percentiles.</p>
+
+    <h4>Query Types Tested</h4>
+    <table>
+      <thead><tr><th>Label</th><th>Query</th><th>Tests</th></tr></thead>
+      <tbody>
+        <tr><td><code>simple_entity</code></td><td>Single entity lookup</td><td>Basic graph traversal speed</td></tr>
+        <tr><td><code>multi_entity</code></td><td>Multi-entity complex question</td><td>Spreading activation with many seeds</td></tr>
+        <tr><td><code>specific_detail</code></td><td>Precise factual question</td><td>Targeted retrieval speed</td></tr>
+        <tr><td><code>broad_topic</code></td><td>Open-ended exploration</td><td>Large context assembly + LLM generation</td></tr>
+        <tr><td><code>correction_flow</code></td><td>Questions about corrections</td><td>Version history traversal</td></tr>
+        <tr><td><code>out_of_domain</code></td><td>Unrelated question</td><td>Continuous learning fallback latency</td></tr>
+        <tr><td><code>algorithm_detail</code></td><td>Technical algorithm question</td><td>Deep graph traversal</td></tr>
+        <tr><td><code>infrastructure</code></td><td>Infrastructure question</td><td>Cross-domain retrieval</td></tr>
+      </tbody>
+    </table>
+
+    <h4>CLI Options</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Default: 8 queries x 3 iterations</span>
+python3 tests/benchmarks/bench_speed.py
+
+<span class="c"># More iterations for stable statistics</span>
+python3 tests/benchmarks/bench_speed.py <span class="k">--iterations</span> <span class="v">10</span>
+
+<span class="c"># Fewer queries for quick check</span>
+python3 tests/benchmarks/bench_speed.py <span class="k">--queries</span> <span class="v">3</span>
+
+<span class="c"># Custom p95 threshold in milliseconds</span>
+python3 tests/benchmarks/bench_speed.py <span class="k">--threshold</span> <span class="v">30000</span>
+
+<span class="c"># Include component-level benchmarks (health, simple, complex, OOD)</span>
+python3 tests/benchmarks/bench_speed.py <span class="k">--component</span></div>
+    </div>
+
+    <h4>Pass/Fail Threshold</h4>
+    <p>The benchmark <strong>fails</strong> (exit code 1) if p95 latency exceeds the threshold (default: 45,000ms). This includes full LLM generation time. Use <code>--threshold</code> to adjust.</p>
+
+    <h4>Output</h4>
+    <p>Results are printed as a table with p50/p95/p99/mean/stdev per query type, plus activation mode distribution and fallback rate. Saved to <code>tests/benchmarks/speed_results.json</code>.</p>
+
+    <h3 id="bench-golden">Golden Dataset</h3>
+    <p>The golden dataset at <code>tests/benchmarks/golden_dataset.jsonl</code> contains 20 Q&A pairs organized by category and difficulty. Each entry specifies expected source nodes and answer keywords.</p>
+
+    <h4>Dataset Structure</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">jsonl</span></div>
+      <div class="code-body">{
+  <span class="k">"id"</span>: <span class="s">"q01"</span>,
+  <span class="k">"query"</span>: <span class="s">"What is the spreading activation algorithm?"</span>,
+  <span class="k">"expected_sources"</span>: [<span class="s">"spreading activation"</span>, <span class="s">"activation engine"</span>, <span class="s">"dampening"</span>],
+  <span class="k">"expected_answer_contains"</span>: [<span class="s">"BFS"</span>, <span class="s">"dampening"</span>, <span class="s">"0.5"</span>, <span class="s">"threshold"</span>],
+  <span class="k">"difficulty"</span>: <span class="s">"easy"</span>,
+  <span class="k">"category"</span>: <span class="s">"architecture"</span>
+}</div>
+    </div>
+
+    <h4>Categories</h4>
+    <table>
+      <thead><tr><th>Category</th><th>Count</th><th>What It Tests</th></tr></thead>
+      <tbody>
+        <tr><td><code>architecture</code></td><td>6</td><td>Memory substrates, activation, Cognee extension</td></tr>
+        <tr><td><code>algorithm</code></td><td>5</td><td>Salience, decay, confidence, token budget, fallback cascade</td></tr>
+        <tr><td><code>feature</code></td><td>3</td><td>Continuous learning, correction versioning, image generation</td></tr>
+        <tr><td><code>api</code></td><td>2</td><td>REST endpoints, correction endpoint</td></tr>
+        <tr><td><code>infrastructure</code></td><td>2</td><td>Celery tasks, vector database</td></tr>
+        <tr><td><code>integration</code></td><td>1</td><td>MCP server integration</td></tr>
+        <tr><td><code>security</code></td><td>1</td><td>Authentication mechanism</td></tr>
+      </tbody>
+    </table>
+
+    <h4>Adding Custom Q&A Pairs</h4>
+    <p>Append new lines to <code>golden_dataset.jsonl</code> to expand coverage. Each line is a JSON object with these fields:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">jsonl</span></div>
+      <div class="code-body"><span class="c">// Required fields:</span>
+<span class="k">"id"</span>          <span class="c">— Unique identifier (e.g., "q21")</span>
+<span class="k">"query"</span>       <span class="c">— Natural language question</span>
+<span class="k">"expected_sources"</span>   <span class="c">— Source node names to match (fuzzy)</span>
+<span class="k">"expected_answer_contains"</span>  <span class="c">— Keywords expected in the answer</span>
+
+<span class="c">// Optional fields:</span>
+<span class="k">"difficulty"</span>  <span class="c">— "easy" | "medium" | "hard" (default: "medium")</span>
+<span class="k">"category"</span>    <span class="c">— Grouping label (default: "general")</span></div>
+    </div>
+
+    <div class="callout callout-tip">
+      <svg class="callout-icon" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div><strong style="color:#10b981;">Environment variables:</strong> Set <code>CORTEXBRAIN_URL</code> (default: <code>http://localhost:8000</code>) and <code>CORTEXBRAIN_API_KEY</code> (default: <code>test-key</code>) to point benchmarks at a different instance.</div>
     </div>
 
 
