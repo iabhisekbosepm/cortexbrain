@@ -764,6 +764,41 @@
         </a>
       </div>
 
+      <!-- Audio & Video -->
+      <div class="mt-10 flex flex-col items-center gap-6 fade-up fade-up-delay-3">
+        <!-- Audio Player -->
+        <div class="w-full max-w-xl">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-mono uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+              Podcast
+            </span>
+            <span class="text-gray-500 text-xs font-mono">Curing AI Amnesia with CortexBrain</span>
+          </div>
+          <audio controls preload="metadata" class="w-full rounded-lg" style="filter: sepia(0.2) saturate(1.5) hue-rotate(-10deg);">
+            <source src="audio/Curing_AI_Amnesia_with_CortexBrain.m4a" type="audio/mp4">
+            Your browser does not support the audio element.
+          </audio>
+        </div>
+
+        <!-- Video Player -->
+        <div class="w-full max-w-2xl">
+          <div class="flex items-center gap-3 mb-2">
+            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-mono uppercase tracking-wider">
+              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              Demo
+            </span>
+            <span class="text-gray-500 text-xs font-mono">CortexBrain: AI That Remembers</span>
+          </div>
+          <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-500/10">
+            <video controls preload="metadata" class="w-full rounded-xl" poster="">
+              <source src="video/CortexBrain__AI_That_Remembers.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+          </div>
+        </div>
+      </div>
+
       <!-- Stats bar -->
       <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 fade-up fade-up-delay-4">
         <div class="text-center">
