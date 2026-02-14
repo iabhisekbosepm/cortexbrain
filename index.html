@@ -1277,119 +1277,178 @@
   </section>
 
   <!-- ===================== MARKET ===================== -->
-  <section id="market" class="relative py-24 md:py-32 bg-dark-900">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <section id="market" class="relative py-24 md:py-32 bg-dark-900 overflow-hidden">
+    <!-- Subtle grid background -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(168,85,247,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
       <div class="text-center mb-20">
-        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-sm font-medium mb-6 fade-up">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-          Market Landscape
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-300 text-sm font-medium mb-6 fade-up">
+          <span class="w-1.5 h-1.5 bg-amber-400 rounded-full status-blink"></span>
+          <span class="font-mono text-[11px] tracking-wider uppercase">Competitive Analysis</span>
         </div>
         <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 fade-up fade-up-delay-1">
-          Everyone Is Trying.<br/><span class="text-gradient">Nobody Has Solved It.</span>
+          Everyone Is Trying.<br/>
+          <span class="text-gradient" style="text-shadow: 0 0 40px rgba(196,104,73,0.3), 0 0 80px rgba(196,104,73,0.1);">Nobody Has Solved It.</span>
         </h2>
+        <div class="corruption-bar max-w-xs mx-auto my-5 fade-up fade-up-delay-1" style="background: linear-gradient(90deg, transparent, rgba(168,85,247,0.5), transparent);"></div>
         <p class="text-lg text-gray-400 max-w-2xl mx-auto fade-up fade-up-delay-2">
           The AI memory space is growing fast, but every existing solution has critical gaps for enterprise use.
         </p>
       </div>
 
-      <div class="tilt-card fade-up fade-up-delay-2">
-        <div class="tilt-card-inner table-wrapper overflow-x-auto rounded-2xl border border-white/[0.08] bg-gradient-to-br from-dark-700/40 to-dark-800/60 backdrop-blur-sm shadow-2xl shadow-brand-500/5">
-        <table class="w-full text-sm">
-          <thead>
-            <tr class="border-b border-white/10 bg-dark-800">
-              <th class="text-left py-4 px-5 text-gray-400 font-medium min-w-[180px]">Capability</th>
-              <th class="py-4 px-4 text-gray-400 font-medium text-center min-w-[110px]">Traditional RAG</th>
-              <th class="py-4 px-4 text-gray-400 font-medium text-center min-w-[90px]">Mem0</th>
-              <th class="py-4 px-4 text-gray-400 font-medium text-center min-w-[100px]">Zep / Graphiti</th>
-              <th class="py-4 px-4 text-gray-400 font-medium text-center min-w-[100px]">Letta (MemGPT)</th>
-              <th class="py-4 px-4 text-gray-400 font-medium text-center min-w-[100px]">Cognee OSS</th>
-              <th class="py-4 px-4 text-white font-bold text-center min-w-[120px] bg-brand-500/10">CortexBrain</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-white/5">
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Persistent Memory</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Knowledge Graph</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Corrections Persist</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Full Audit Trail</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Confidence Scoring</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Version History</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Smart Context Selection</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
-              <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-            <tr class="hover:bg-white/[0.02] transition-colors">
-              <td class="py-3.5 px-5 text-gray-300">Self-Learning</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
-              <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
-            </tr>
-          </tbody>
-        </table>
-      </div></div>
+      <!-- Table with HUD frame -->
+      <div class="relative fade-up fade-up-delay-2">
+        <!-- HUD corner brackets -->
+        <div class="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-purple-500/40 rounded-tl-sm z-10"></div>
+        <div class="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-purple-500/40 rounded-tr-sm z-10"></div>
+        <div class="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-purple-500/40 rounded-bl-sm z-10"></div>
+        <div class="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-purple-500/40 rounded-br-sm z-10"></div>
+        <!-- HUD label -->
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 bg-dark-900 border border-purple-500/20 rounded text-[10px] font-mono text-purple-400/70 tracking-widest uppercase">Market Matrix</div>
 
-      <div class="mt-12 text-center fade-up">
-        <div class="tilt-card inline-block">
-          <div class="tilt-card-inner inline-flex items-center gap-3 bg-gradient-to-r from-brand-500/15 to-purple-500/15 border border-brand-500/20 rounded-xl px-8 py-5 text-brand-200 backdrop-blur-sm">
-            <svg class="w-6 h-6 text-brand-400 flex-shrink-0 float-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-            <span class="text-sm md:text-base"><strong class="text-white">Every existing tool treats memory as a feature.</strong> CortexBrain treats it as the product.</span>
+        <div class="table-wrapper overflow-x-auto rounded-2xl border border-purple-500/[0.08] bg-gradient-to-br from-dark-700/40 to-dark-800/60 backdrop-blur-sm shadow-2xl shadow-purple-500/5">
+          <table class="w-full text-sm">
+            <thead>
+              <tr class="border-b border-white/10 bg-dark-800/80">
+                <th class="text-left py-4 px-5 text-gray-400 font-medium min-w-[180px]">
+                  <span class="font-mono text-[11px] tracking-wider uppercase">Capability</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[110px]">
+                  <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-red-500/10 text-red-400/70 border border-red-500/15 uppercase tracking-wider">RAG</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[90px]">
+                  <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-gray-500/10 text-gray-400/70 border border-gray-500/15 uppercase tracking-wider">Mem0</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[100px]">
+                  <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-gray-500/10 text-gray-400/70 border border-gray-500/15 uppercase tracking-wider">Zep</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[100px]">
+                  <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-gray-500/10 text-gray-400/70 border border-gray-500/15 uppercase tracking-wider">Letta</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[100px]">
+                  <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-gray-500/10 text-gray-400/70 border border-gray-500/15 uppercase tracking-wider">Cognee</span>
+                </th>
+                <th class="py-4 px-4 text-center min-w-[120px] bg-brand-500/8 border-b-2 border-brand-500/30">
+                  <div class="flex items-center justify-center gap-1.5">
+                    <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+                    <span class="px-2 py-0.5 text-[10px] font-mono rounded bg-brand-500/15 text-brand-300 border border-brand-500/20 uppercase tracking-wider font-bold">CortexBrain</span>
+                  </div>
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-white/5">
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-3.5 px-5 text-gray-300">Persistent Memory</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors bg-white/[0.01]">
+                <td class="py-3.5 px-5 text-gray-300">Knowledge Graph</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes">&#10003;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-3.5 px-5 text-gray-300 font-medium">Corrections Persist</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors bg-white/[0.01]">
+                <td class="py-3.5 px-5 text-gray-300 font-medium">Full Audit Trail</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-3.5 px-5 text-gray-300 font-medium">Confidence Scoring</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors bg-white/[0.01]">
+                <td class="py-3.5 px-5 text-gray-300 font-medium">Version History</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors">
+                <td class="py-3.5 px-5 text-gray-300">Smart Context Selection</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
+                <td class="py-3.5 px-4 text-center cell-partial">Partial</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+              <tr class="hover:bg-white/[0.02] transition-colors bg-white/[0.01]">
+                <td class="py-3.5 px-5 text-gray-300 font-medium">Self-Learning</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-no">&#10007;</td>
+                <td class="py-3.5 px-4 text-center cell-yes bg-brand-500/5 font-bold">&#10003;</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Score summary bar below table -->
+        <div class="mt-4 bg-dark-800/60 rounded-lg border border-white/[0.04] p-3 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-brand-400 rounded-full status-blink"></span>
+            <span class="text-[10px] font-mono text-brand-400/70 uppercase tracking-wider">CortexBrain: 8/8 Capabilities</span>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="text-[10px] font-mono text-gray-500">RAG <span class="text-red-400">0/8</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Mem0 <span class="text-amber-400">1/8</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Zep <span class="text-amber-400">2/8</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Letta <span class="text-amber-400">2/8</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Cognee <span class="text-amber-400">3/8</span></span>
           </div>
         </div>
+      </div>
+
+      <!-- Callout -->
+      <div class="mt-14 fade-up">
+        <div class="relative max-w-2xl mx-auto">
+          <div class="absolute -top-1.5 -left-1.5 w-4 h-4 border-t border-l border-brand-500/30 rounded-tl-sm"></div>
+          <div class="absolute -top-1.5 -right-1.5 w-4 h-4 border-t border-r border-brand-500/30 rounded-tr-sm"></div>
+          <div class="absolute -bottom-1.5 -left-1.5 w-4 h-4 border-b border-l border-brand-500/30 rounded-bl-sm"></div>
+          <div class="absolute -bottom-1.5 -right-1.5 w-4 h-4 border-b border-r border-brand-500/30 rounded-br-sm"></div>
+
+          <div class="bg-gradient-to-r from-brand-500/8 to-purple-500/8 rounded-xl border border-brand-500/[0.08] p-5 flex items-center gap-4 justify-center text-center">
+            <svg class="w-6 h-6 text-brand-400 flex-shrink-0 float-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <span class="text-sm md:text-base text-brand-200"><strong class="text-white">Every existing tool treats memory as a feature.</strong> CortexBrain treats it as the product.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom connector signal -->
+      <div class="relative h-px max-w-2xl mx-auto mt-12">
+        <div class="h-full connector-flow" style="animation-direction: reverse;"></div>
       </div>
     </div>
   </section>
@@ -2290,39 +2349,84 @@
   </section>
 
   <!-- ===================== COMPARISON ===================== -->
-  <section id="comparison" class="relative py-24 md:py-32 bg-dark-800">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="text-center mb-16 fade-up">
-        <span class="inline-block px-3 py-1 text-xs font-mono font-medium text-brand-300 bg-brand-500/10 border border-brand-500/20 rounded-full mb-4">HEAD TO HEAD</span>
-        <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4">
-          Standard RAG vs. <span class="text-gradient">CortexBrain</span>
+  <section id="comparison" class="relative py-24 md:py-32 bg-dark-800 overflow-hidden">
+    <!-- Subtle grid background -->
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: linear-gradient(rgba(196,104,73,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(196,104,73,0.5) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+    <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Section header -->
+      <div class="text-center mb-20">
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-sm font-medium mb-6 fade-up">
+          <span class="w-1.5 h-1.5 bg-brand-400 rounded-full status-blink"></span>
+          <span class="font-mono text-[11px] tracking-wider uppercase">Head to Head</span>
+        </div>
+        <h2 class="text-3xl sm:text-4xl md:text-6xl font-bold text-white mb-4 fade-up fade-up-delay-1">
+          Standard RAG vs.<br/>
+          <span class="text-gradient" style="text-shadow: 0 0 40px rgba(196,104,73,0.3), 0 0 80px rgba(196,104,73,0.1);">CortexBrain</span>
         </h2>
+        <div class="corruption-bar max-w-xs mx-auto my-5 fade-up fade-up-delay-1" style="background: linear-gradient(90deg, transparent, rgba(196,104,73,0.6), transparent);"></div>
+        <p class="text-lg text-gray-400 max-w-2xl mx-auto fade-up fade-up-delay-2">
+          Side-by-side: what changes when you replace a stateless retriever with a persistent, self-correcting knowledge brain.
+        </p>
       </div>
 
-      <!-- Comparison visual -->
-      <div class="tilt-card max-w-2xl mx-auto mb-14 fade-up">
-        <div class="tilt-card-inner rounded-2xl overflow-hidden border border-white/[0.06]">
-          <img src="images/comparison-rag-vs-cortex.png" alt="Comparison diagram — standard RAG stuffing documents into a funnel vs CortexBrain selecting precise knowledge nodes" class="w-full" />
+      <!-- Comparison visual with HUD frame -->
+      <div class="relative max-w-2xl mx-auto mb-20 fade-up">
+        <!-- HUD corner brackets -->
+        <div class="absolute -top-2 -left-2 w-6 h-6 border-t-2 border-l-2 border-brand-500/40 rounded-tl-sm z-10"></div>
+        <div class="absolute -top-2 -right-2 w-6 h-6 border-t-2 border-r-2 border-brand-500/40 rounded-tr-sm z-10"></div>
+        <div class="absolute -bottom-2 -left-2 w-6 h-6 border-b-2 border-l-2 border-brand-500/40 rounded-bl-sm z-10"></div>
+        <div class="absolute -bottom-2 -right-2 w-6 h-6 border-b-2 border-r-2 border-brand-500/40 rounded-br-sm z-10"></div>
+        <!-- HUD label -->
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 z-10 px-3 py-0.5 bg-dark-800 border border-brand-500/20 rounded text-[10px] font-mono text-brand-400/70 tracking-widest uppercase">Benchmark</div>
+
+        <div class="tilt-card" style="--accent-glow: rgba(196,104,73,0.3);">
+          <div class="tilt-card-inner rounded-2xl overflow-hidden border border-white/[0.06]">
+            <img src="images/comparison-rag-vs-cortex.png" alt="Comparison diagram — standard RAG stuffing documents into a funnel vs CortexBrain selecting precise knowledge nodes" class="w-full" />
+          </div>
+        </div>
+
+        <!-- Verdict bar below image -->
+        <div class="mt-4 bg-dark-900/60 rounded-lg border border-white/[0.04] p-3 flex items-center justify-between flex-wrap gap-3">
+          <div class="flex items-center gap-2">
+            <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+            <span class="text-[10px] font-mono text-emerald-400/70 uppercase tracking-wider">CortexBrain Wins 7/7</span>
+          </div>
+          <div class="flex items-center gap-4 flex-wrap">
+            <span class="text-[10px] font-mono text-gray-500">Tokens <span class="text-emerald-400">-65%</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Accuracy <span class="text-emerald-400">+25%</span></span>
+            <span class="text-[10px] font-mono text-gray-500">Corrections <span class="text-emerald-400">Persistent</span></span>
+          </div>
         </div>
       </div>
 
-      <!-- Comparison table as tilt-card -->
-      <div class="tilt-card fade-up" style="--accent-glow: rgba(196,104,73,0.3);">
-        <div class="tilt-card-inner relative rounded-2xl border border-white/[0.06] bg-gradient-to-br from-dark-700/60 to-dark-800/80 overflow-hidden backdrop-blur-sm">
-          <div class="accent-bar bg-gradient-to-b from-brand-400 to-emerald-500"></div>
+      <!-- Comparison table -->
+      <div class="relative fade-up">
+        <!-- HUD corner brackets -->
+        <div class="absolute -top-2 -left-2 w-5 h-5 border-t-2 border-l-2 border-white/10 rounded-tl-sm z-10"></div>
+        <div class="absolute -top-2 -right-2 w-5 h-5 border-t-2 border-r-2 border-white/10 rounded-tr-sm z-10"></div>
+        <div class="absolute -bottom-2 -left-2 w-5 h-5 border-b-2 border-l-2 border-white/10 rounded-bl-sm z-10"></div>
+        <div class="absolute -bottom-2 -right-2 w-5 h-5 border-b-2 border-r-2 border-white/10 rounded-br-sm z-10"></div>
 
+        <div class="rounded-2xl border border-white/[0.06] bg-gradient-to-br from-dark-700/60 to-dark-800/80 overflow-hidden backdrop-blur-sm">
           <!-- Header -->
-          <div class="grid grid-cols-3 gap-4 px-6 py-4 border-b border-white/5">
-            <div class="text-sm font-medium text-gray-400 font-mono">Capability</div>
+          <div class="grid grid-cols-3 gap-4 px-6 py-4 border-b border-white/5 bg-dark-800/60">
+            <div class="font-mono text-[11px] text-gray-400 tracking-wider uppercase flex items-center">Capability</div>
             <div class="text-center">
-              <span class="px-2 py-0.5 text-xs font-mono rounded bg-red-500/10 text-red-400 border border-red-500/20">Standard RAG</span>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-red-500/8 border border-red-500/10">
+                <span class="w-1.5 h-1.5 bg-red-400/60 rounded-full"></span>
+                <span class="text-[10px] font-mono text-red-400/70 uppercase tracking-wider">Standard RAG</span>
+              </div>
             </div>
             <div class="text-center">
-              <span class="px-2 py-0.5 text-xs font-mono rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">CortexBrain</span>
+              <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/8 border border-emerald-500/10">
+                <span class="w-1.5 h-1.5 bg-emerald-400 rounded-full status-blink"></span>
+                <span class="text-[10px] font-mono text-emerald-400/70 uppercase tracking-wider">CortexBrain</span>
+              </div>
             </div>
           </div>
 
-          <!-- Rows with alternating backgrounds and visual indicators -->
+          <!-- Rows -->
           <div class="divide-y divide-white/[0.03]">
             <div class="grid grid-cols-3 gap-4 px-6 py-4 items-center hover:bg-white/[0.02] transition-colors">
               <div class="text-gray-300 text-sm">Memory Model</div>
@@ -2376,35 +2480,40 @@
           </div>
 
           <!-- Bottom stats bar -->
-          <div class="grid grid-cols-2 divide-x divide-white/5 border-t border-white/5">
-            <div class="px-6 py-4 text-center">
+          <div class="grid grid-cols-2 divide-x divide-white/5 border-t border-white/5 bg-dark-900/30">
+            <div class="px-6 py-5 text-center">
               <div class="flex items-center justify-center gap-3">
                 <div>
                   <div class="text-red-400 text-lg font-bold font-mono">~3,500</div>
-                  <div class="text-gray-500 text-[10px] font-mono">TOKENS/QUERY (RAG)</div>
+                  <div class="text-gray-500 text-[10px] font-mono uppercase tracking-wider">Tokens/Query (RAG)</div>
                 </div>
                 <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 <div>
                   <div class="text-emerald-400 text-lg font-bold font-mono stat-counter">~1,200</div>
-                  <div class="text-gray-500 text-[10px] font-mono">TOKENS (CORTEX)</div>
+                  <div class="text-gray-500 text-[10px] font-mono uppercase tracking-wider">Tokens (Cortex)</div>
                 </div>
               </div>
             </div>
-            <div class="px-6 py-4 text-center">
+            <div class="px-6 py-5 text-center">
               <div class="flex items-center justify-center gap-3">
                 <div>
                   <div class="text-red-400/60 text-lg font-bold font-mono">60-70%</div>
-                  <div class="text-gray-500 text-[10px] font-mono">ACCURACY (RAG)</div>
+                  <div class="text-gray-500 text-[10px] font-mono uppercase tracking-wider">Accuracy (RAG)</div>
                 </div>
                 <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 <div>
                   <div class="text-emerald-400 text-lg font-bold font-mono stat-counter">85%+</div>
-                  <div class="text-gray-500 text-[10px] font-mono">ACCURACY (CORTEX)</div>
+                  <div class="text-gray-500 text-[10px] font-mono uppercase tracking-wider">Accuracy (Cortex)</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      <!-- Bottom connector signal -->
+      <div class="relative h-px max-w-2xl mx-auto mt-12">
+        <div class="h-full connector-flow" style="animation-direction: reverse;"></div>
       </div>
     </div>
   </section>
