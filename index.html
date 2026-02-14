@@ -764,43 +764,8 @@
         </a>
       </div>
 
-      <!-- Audio & Video -->
-      <div class="mt-10 flex flex-col items-center gap-6 fade-up fade-up-delay-3">
-        <!-- Audio Player -->
-        <div class="w-full max-w-xl">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-mono uppercase tracking-wider">
-              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
-              Podcast
-            </span>
-            <span class="text-gray-500 text-xs font-mono">Curing AI Amnesia with CortexBrain</span>
-          </div>
-          <audio controls preload="metadata" class="w-full rounded-lg" style="filter: sepia(0.2) saturate(1.5) hue-rotate(-10deg);">
-            <source src="audio/Curing_AI_Amnesia_with_CortexBrain.m4a" type="audio/mp4">
-            Your browser does not support the audio element.
-          </audio>
-        </div>
-
-        <!-- Video Player -->
-        <div class="w-full max-w-2xl">
-          <div class="flex items-center gap-3 mb-2">
-            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-300 text-xs font-mono uppercase tracking-wider">
-              <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-              Demo
-            </span>
-            <span class="text-gray-500 text-xs font-mono">CortexBrain: AI That Remembers</span>
-          </div>
-          <div class="relative rounded-xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-500/10">
-            <video controls preload="metadata" class="w-full rounded-xl" poster="">
-              <source src="video/CortexBrain__AI_That_Remembers.mp4" type="video/mp4">
-              Your browser does not support the video element.
-            </video>
-          </div>
-        </div>
-      </div>
-
       <!-- Stats bar -->
-      <div class="mt-20 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 fade-up fade-up-delay-4">
+      <div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 fade-up fade-up-delay-4">
         <div class="text-center">
           <div class="text-3xl md:text-4xl font-bold text-white">65%</div>
           <div class="text-sm text-gray-500 mt-1">Token Savings</div>
@@ -823,6 +788,88 @@
     <!-- Scroll indicator -->
     <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce z-[2]">
       <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/></svg>
+    </div>
+  </section>
+
+  <!-- ===================== MEDIA SHOWCASE ===================== -->
+  <section class="relative py-16 md:py-20 bg-dark-900 overflow-hidden">
+    <div class="absolute inset-0 opacity-[0.03]" style="background-image: radial-gradient(circle at 1px 1px, rgba(196,104,73,0.4) 1px, transparent 0); background-size: 40px 40px;"></div>
+    <div class="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-6 items-start">
+
+        <!-- Video — takes 3/5 width on desktop -->
+        <div class="lg:col-span-3 fade-up">
+          <div class="rounded-2xl overflow-hidden border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm">
+            <!-- Video header bar -->
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-brand-500/15 text-brand-400 text-[10px] font-mono uppercase tracking-widest font-bold">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                Demo
+              </span>
+              <span class="text-gray-500 text-xs font-mono truncate">CortexBrain: AI That Remembers</span>
+              <span class="ml-auto text-gray-600 text-[10px] font-mono">2:03</span>
+            </div>
+            <video controls preload="metadata" class="w-full block">
+              <source src="video/CortexBrain__AI_That_Remembers.mp4" type="video/mp4">
+              Your browser does not support the video element.
+            </video>
+          </div>
+        </div>
+
+        <!-- Audio + info — takes 2/5 width on desktop -->
+        <div class="lg:col-span-2 flex flex-col gap-5 fade-up fade-up-delay-1">
+          <!-- Audio card -->
+          <div class="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm overflow-hidden">
+            <!-- Audio header bar -->
+            <div class="flex items-center gap-3 px-4 py-3 border-b border-white/[0.06] bg-white/[0.02]">
+              <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-purple-500/15 text-purple-400 text-[10px] font-mono uppercase tracking-widest font-bold">
+                <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+                Podcast
+              </span>
+              <span class="ml-auto text-gray-600 text-[10px] font-mono">15:44</span>
+            </div>
+            <div class="px-4 pt-4 pb-2">
+              <h3 class="text-white text-sm font-semibold mb-1">Curing AI Amnesia</h3>
+              <p class="text-gray-500 text-xs mb-3">How CortexBrain gives AI persistent, self-correcting memory</p>
+            </div>
+            <div class="px-4 pb-4">
+              <audio controls preload="metadata" class="w-full h-10" style="filter: brightness(0.85) contrast(1.1);">
+                <source src="audio/Curing_AI_Amnesia_with_CortexBrain.m4a" type="audio/mp4">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+          </div>
+
+          <!-- Quick highlights card -->
+          <div class="rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-sm p-5">
+            <div class="flex items-center gap-2 mb-4">
+              <div class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></div>
+              <span class="text-gray-400 text-xs font-mono uppercase tracking-wider">Why CortexBrain</span>
+            </div>
+            <div class="space-y-3">
+              <div class="flex items-start gap-3">
+                <div class="mt-0.5 w-6 h-6 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <p class="text-gray-400 text-sm leading-snug">Corrections stick <span class="text-white font-medium">forever</span> with full version history</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="mt-0.5 w-6 h-6 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <p class="text-gray-400 text-sm leading-snug"><span class="text-white font-medium">65% fewer tokens</span> via spreading activation</p>
+              </div>
+              <div class="flex items-start gap-3">
+                <div class="mt-0.5 w-6 h-6 rounded-lg bg-brand-500/10 flex items-center justify-center flex-shrink-0">
+                  <svg class="w-3.5 h-3.5 text-brand-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                </div>
+                <p class="text-gray-400 text-sm leading-snug">Every answer <span class="text-white font-medium">fully auditable</span> &mdash; who, what, when, why</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </div>
   </section>
 
