@@ -1,0 +1,985 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CortexBrain Documentation — Installation, Setup & Usage Guide</title>
+  <meta name="description" content="Complete guide to installing, configuring and using CortexBrain — the enterprise AI memory system. Step-by-step setup, API reference, MCP integration, and admin dashboard." />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png" />
+  <meta name="theme-color" content="#131314" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#fef5f2', 100: '#fde8e1', 200: '#fbd0c3', 300: '#f5a98e',
+              400: '#e07c5a', 500: '#C46849', 600: '#a8553b', 700: '#8c4530',
+              800: '#743928', 900: '#5f2f21', 950: '#331810',
+            },
+            dark: { 900: '#131314', 800: '#1a1a1b', 700: '#2a2a2b', 600: '#3d3d3b' },
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    body { background: #131314; color: #d1d5db; }
+    ::selection { background: rgba(196,104,73,0.3); }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #1a1a1b; }
+    ::-webkit-scrollbar-thumb { background: #3d3d3b; border-radius: 3px; }
+
+    /* Sidebar */
+    .sidebar { position: fixed; top: 0; left: 0; width: 280px; height: 100vh; overflow-y: auto; border-right: 1px solid rgba(255,255,255,0.06); background: #1a1a1b; z-index: 40; }
+    .sidebar-link { display: block; padding: 6px 16px 6px 24px; font-size: 13px; color: #9ca3af; transition: all 0.15s; border-left: 2px solid transparent; }
+    .sidebar-link:hover { color: #e5e7eb; background: rgba(255,255,255,0.03); }
+    .sidebar-link.active { color: #C46849; border-left-color: #C46849; background: rgba(196,104,73,0.06); }
+    .sidebar-section { padding: 10px 16px 4px 16px; font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7280; margin-top: 8px; }
+    .sidebar-sub { padding-left: 40px; font-size: 12px; }
+
+    /* Content */
+    .doc-content { margin-left: 280px; max-width: 860px; padding: 48px 48px 120px; }
+    .doc-content h1 { font-size: 2rem; font-weight: 800; color: #fff; margin-bottom: 12px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .doc-content h2 { font-size: 1.5rem; font-weight: 700; color: #fff; margin-top: 56px; margin-bottom: 16px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.04); scroll-margin-top: 24px; }
+    .doc-content h3 { font-size: 1.125rem; font-weight: 600; color: #e5e7eb; margin-top: 32px; margin-bottom: 12px; scroll-margin-top: 24px; }
+    .doc-content h4 { font-size: 0.95rem; font-weight: 600; color: #d1d5db; margin-top: 24px; margin-bottom: 8px; }
+    .doc-content p { line-height: 1.75; margin-bottom: 16px; }
+    .doc-content ul, .doc-content ol { margin-bottom: 16px; padding-left: 24px; }
+    .doc-content li { margin-bottom: 6px; line-height: 1.65; }
+    .doc-content a { color: #e07c5a; text-decoration: underline; text-underline-offset: 2px; }
+    .doc-content a:hover { color: #f5a98e; }
+    .doc-content strong { color: #e5e7eb; }
+    .doc-content code { font-family: 'JetBrains Mono', monospace; font-size: 0.85em; background: rgba(255,255,255,0.06); padding: 2px 6px; border-radius: 4px; color: #f5a98e; }
+    .doc-content table { width: 100%; border-collapse: collapse; margin-bottom: 24px; font-size: 14px; }
+    .doc-content th { text-align: left; padding: 10px 14px; font-weight: 600; color: #e5e7eb; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.08); font-size: 12px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .doc-content td { padding: 10px 14px; border-bottom: 1px solid rgba(255,255,255,0.03); }
+    .doc-content tr:hover td { background: rgba(255,255,255,0.015); }
+
+    /* Code blocks */
+    .code-block { background: #111112; border: 1px solid rgba(255,255,255,0.06); border-radius: 10px; overflow: hidden; margin-bottom: 20px; }
+    .code-header { display: flex; align-items: center; gap: 8px; padding: 10px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); background: rgba(255,255,255,0.02); }
+    .code-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .code-dot-r { background: rgba(239,68,68,0.5); }
+    .code-dot-y { background: rgba(245,158,11,0.5); }
+    .code-dot-g { background: rgba(16,185,129,0.5); }
+    .code-lang { font-size: 10px; font-family: 'JetBrains Mono', monospace; color: #6b7280; margin-left: 4px; text-transform: uppercase; letter-spacing: 0.1em; }
+    .code-body { padding: 16px 20px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12.5px; line-height: 1.7; color: #9ca3af; white-space: pre; }
+    .code-body .c { color: #6b7280; }
+    .code-body .s { color: #10b981; }
+    .code-body .k { color: #f5a98e; }
+    .code-body .n { color: #60a5fa; }
+    .code-body .v { color: #fbbf24; }
+
+    /* Callouts */
+    .callout { border-radius: 10px; padding: 16px 20px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.65; }
+    .callout-info { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.15); }
+    .callout-warn { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.15); }
+    .callout-tip { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.15); }
+    .callout-icon { flex-shrink: 0; width: 20px; height: 20px; margin-top: 2px; }
+
+    /* Badge */
+    .method-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; letter-spacing: 0.05em; }
+    .method-post { background: rgba(16,185,129,0.12); color: #10b981; border: 1px solid rgba(16,185,129,0.15); }
+    .method-get { background: rgba(59,130,246,0.12); color: #60a5fa; border: 1px solid rgba(59,130,246,0.15); }
+
+    /* Infographic */
+    .infographic-frame { position: relative; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.06); margin-bottom: 32px; }
+    .infographic-frame::before, .infographic-frame::after { content: ''; position: absolute; width: 20px; height: 20px; z-index: 2; }
+    .infographic-frame::before { top: -1px; left: -1px; border-top: 2px solid rgba(196,104,73,0.5); border-left: 2px solid rgba(196,104,73,0.5); border-radius: 4px 0 0 0; }
+    .infographic-frame::after { bottom: -1px; right: -1px; border-bottom: 2px solid rgba(196,104,73,0.5); border-right: 2px solid rgba(196,104,73,0.5); border-radius: 0 0 4px 0; }
+
+    /* Step counter */
+    .step { display: flex; gap: 16px; margin-bottom: 24px; }
+    .step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 8px; background: rgba(196,104,73,0.12); border: 1px solid rgba(196,104,73,0.2); color: #C46849; font-weight: 700; font-size: 14px; display: flex; align-items: center; justify-content: center; margin-top: 2px; }
+    .step-body { flex: 1; }
+    .step-body h4 { margin-top: 0; color: #fff; }
+
+    /* Mobile sidebar toggle */
+    .sidebar-toggle { display: none; position: fixed; bottom: 20px; right: 20px; z-index: 50; width: 48px; height: 48px; border-radius: 12px; background: #C46849; color: #fff; border: none; cursor: pointer; box-shadow: 0 4px 20px rgba(196,104,73,0.3); }
+
+    @media (max-width: 900px) {
+      .sidebar { transform: translateX(-100%); transition: transform 0.25s; }
+      .sidebar.open { transform: translateX(0); }
+      .doc-content { margin-left: 0; padding: 32px 20px 100px; }
+      .sidebar-toggle { display: flex; align-items: center; justify-content: center; }
+      .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 39; }
+      .sidebar-overlay.open { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Mobile overlay -->
+  <div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-5 border-b border-white/[0.06]">
+      <a href="index.html" class="flex items-center gap-3">
+        <img src="images/logo-mark.png" alt="CortexBrain" class="w-8 h-8 rounded-lg" />
+        <div>
+          <div class="text-white font-bold text-sm">CortexBrain</div>
+          <div class="text-[10px] font-mono text-gray-500 tracking-wider">DOCUMENTATION</div>
+        </div>
+      </a>
+    </div>
+
+    <nav class="py-4">
+      <div class="sidebar-section">Getting Started</div>
+      <a href="#overview" class="sidebar-link active">Overview</a>
+      <a href="#requirements" class="sidebar-link">System Requirements</a>
+      <a href="#installation" class="sidebar-link">Installation</a>
+      <a href="#configuration" class="sidebar-link">Configuration</a>
+      <a href="#first-run" class="sidebar-link">First Run</a>
+
+      <div class="sidebar-section">Using CortexBrain</div>
+      <a href="#ingest" class="sidebar-link">Ingesting Knowledge</a>
+      <a href="#ingest-files" class="sidebar-link sidebar-sub">File Upload</a>
+      <a href="#ingest-text" class="sidebar-link sidebar-sub">Direct Text</a>
+      <a href="#ingest-batch" class="sidebar-link sidebar-sub">Batch Processing</a>
+      <a href="#querying" class="sidebar-link">Querying</a>
+      <a href="#query-basic" class="sidebar-link sidebar-sub">Basic Queries</a>
+      <a href="#query-sessions" class="sidebar-link sidebar-sub">Session Continuity</a>
+      <a href="#query-confidence" class="sidebar-link sidebar-sub">Confidence Levels</a>
+      <a href="#corrections" class="sidebar-link">Corrections</a>
+      <a href="#audit" class="sidebar-link">Audit Trail</a>
+
+      <div class="sidebar-section">Integration</div>
+      <a href="#mcp" class="sidebar-link">MCP Integration</a>
+      <a href="#mcp-claude" class="sidebar-link sidebar-sub">Claude Code</a>
+      <a href="#mcp-other" class="sidebar-link sidebar-sub">Other Clients</a>
+      <a href="#mcp-tools" class="sidebar-link sidebar-sub">MCP Tools</a>
+      <a href="#rest-api" class="sidebar-link">REST API Reference</a>
+
+      <div class="sidebar-section">Administration</div>
+      <a href="#dashboard" class="sidebar-link">Admin Dashboard</a>
+      <a href="#workers" class="sidebar-link">Background Workers</a>
+      <a href="#consolidation" class="sidebar-link">Memory Consolidation</a>
+      <a href="#health" class="sidebar-link">Health Monitoring</a>
+
+      <div class="sidebar-section">Reference</div>
+      <a href="#architecture" class="sidebar-link">Architecture</a>
+      <a href="#algorithms" class="sidebar-link">Algorithms</a>
+      <a href="#troubleshooting" class="sidebar-link">Troubleshooting</a>
+      <a href="#env-vars" class="sidebar-link">Environment Variables</a>
+    </nav>
+  </aside>
+
+  <!-- Mobile toggle button -->
+  <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="Toggle navigation">
+    <svg width="22" height="22" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+  </button>
+
+  <!-- Main content -->
+  <main class="doc-content">
+
+    <!-- ====== OVERVIEW ====== -->
+    <h1 id="overview">CortexBrain Documentation</h1>
+    <p style="font-size: 1.125rem; color: #9ca3af; margin-bottom: 32px;">
+      Complete guide to installing, configuring, and using CortexBrain &mdash; the enterprise AI memory system that gets smarter every time someone corrects it.
+    </p>
+
+    <div class="infographic-frame">
+      <img src="images/cortex-brain-infographic.png" alt="CortexBrain system architecture infographic showing the four memory substrates and query pipeline" class="w-full" />
+    </div>
+
+    <p>
+      CortexBrain gives your organization a <strong>persistent, self-correcting AI brain</strong>. Unlike standard RAG systems that start fresh every session, CortexBrain remembers corrections, tracks confidence, and provides a full audit trail for every answer.
+    </p>
+
+    <h3>What makes CortexBrain different</h3>
+    <table>
+      <thead>
+        <tr><th>Capability</th><th>Standard RAG</th><th>CortexBrain</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Memory</td><td style="color:#ef4444;">Stateless &mdash; lost every session</td><td style="color:#10b981;">Persistent across all sessions &amp; users</td></tr>
+        <tr><td>Corrections</td><td style="color:#ef4444;">Vanish when session ends</td><td style="color:#10b981;">Permanent + versioned with audit trail</td></tr>
+        <tr><td>Confidence</td><td style="color:#ef4444;">None</td><td style="color:#10b981;">4-level scoring (High / Medium / Low / Conflicted)</td></tr>
+        <tr><td>Context cost</td><td style="color:#ef4444;">O(n) &mdash; stuffs everything</td><td style="color:#10b981;">O(1) &mdash; spreading activation selects only relevant nodes</td></tr>
+        <tr><td>Audit trail</td><td style="color:#ef4444;">None</td><td style="color:#10b981;">Full: who changed what, when, and why</td></tr>
+        <tr><td>Self-improvement</td><td style="color:#ef4444;">No</td><td style="color:#10b981;">Continuous learning from corrections &amp; fallback answers</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== REQUIREMENTS ====== -->
+    <h2 id="requirements">System Requirements</h2>
+
+    <table>
+      <thead><tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr></thead>
+      <tbody>
+        <tr><td>Python</td><td>3.12+</td><td>3.12</td></tr>
+        <tr><td>Node.js (for dashboard)</td><td>18+</td><td>20 LTS</td></tr>
+        <tr><td>Docker &amp; Docker Compose</td><td>v2.0+</td><td>Latest</td></tr>
+        <tr><td>RAM</td><td>4 GB</td><td>8 GB+</td></tr>
+        <tr><td>Disk</td><td>10 GB free</td><td>20 GB+ (scales with data)</td></tr>
+        <tr><td>OS</td><td colspan="2">Linux (Ubuntu 22.04+), macOS 13+, Windows via WSL2</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Required services (managed by Docker)</h3>
+    <table>
+      <thead><tr><th>Service</th><th>Version</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>Neo4j</td><td>5 Community</td><td>Semantic Memory (knowledge graph)</td></tr>
+        <tr><td>Redis</td><td>7 Alpine</td><td>Active Memory (activation scores) + Celery broker</td></tr>
+        <tr><td>PostgreSQL</td><td>16 Alpine</td><td>Meta Memory (audit logs, metadata, organizations)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Required API keys</h3>
+    <table>
+      <thead><tr><th>Key</th><th>Where to get it</th><th>Used for</th></tr></thead>
+      <tbody>
+        <tr><td><code>LLM_API_KEY</code></td><td>Your LLM provider (Gemini, OpenAI, Anthropic)</td><td>Query answering, entity extraction</td></tr>
+        <tr><td><code>GEMINI_API_KEY</code></td><td><a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a></td><td>Image generation (optional)</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== INSTALLATION ====== -->
+    <h2 id="installation">Installation</h2>
+
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-body">
+        <h4>Clone the repository</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body">git clone https://github.com/iabhisekbosepm/cortexbrain.git
+cd cortexbrain</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-body">
+        <h4>Install Python dependencies</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body"><span class="c"># Create a virtual environment (recommended)</span>
+python3 -m venv .venv
+source .venv/bin/activate
+
+<span class="c"># Install CortexBrain with all dependencies</span>
+pip install -e <span class="s">".[dev]"</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-body">
+        <h4>Configure environment</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body">cp .env.example .env
+
+<span class="c"># Edit .env and add your API keys</span>
+nano .env</div>
+        </div>
+        <p>At minimum, set <code>LLM_API_KEY</code> and <code>LLM_MODEL</code>. See <a href="#env-vars">Environment Variables</a> for all options.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-body">
+        <h4>Start backing services</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body"><span class="c"># Starts Neo4j, Redis, and PostgreSQL</span>
+docker compose up -d
+
+<span class="c"># Verify all containers are running</span>
+docker compose ps</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">5</div>
+      <div class="step-body">
+        <h4>Start the API server</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body">uvicorn cortexbrain.main:app --reload --port 8000</div>
+        </div>
+        <p>The API is now live at <code>http://localhost:8000</code>.</p>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">6</div>
+      <div class="step-body">
+        <h4>Start background workers (required for decay, consolidation, batch ingestion)</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body"><span class="c"># In a new terminal — task worker</span>
+celery -A cortexbrain.workers.celery_app worker --loglevel=info
+
+<span class="c"># In another terminal — scheduled tasks (decay, salience, consolidation)</span>
+celery -A cortexbrain.workers.celery_app beat --loglevel=info</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">7</div>
+      <div class="step-body">
+        <h4>Verify the installation</h4>
+        <div class="code-block">
+          <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+          <div class="code-body">curl -s http://localhost:8000/api/v1/health | python3 -m json.tool</div>
+        </div>
+        <p>You should see all services reporting <code>"status": "ok"</code>.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <svg class="callout-icon" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div><strong style="color:#10b981;">Hybrid mode (recommended):</strong> Run infrastructure (Neo4j, Redis, PostgreSQL) in Docker, and run the Python app locally. This avoids Docker build issues and gives you hot-reload during development.</div>
+    </div>
+
+
+    <!-- ====== CONFIGURATION ====== -->
+    <h2 id="configuration">Configuration</h2>
+    <p>CortexBrain uses a <code>.env</code> file for all configuration. Cognee reads its own env vars automatically; CortexBrain adds a settings layer on top via <code>CortexBrainSettings</code>.</p>
+
+    <h3>Minimal .env example</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">.env</span></div>
+      <div class="code-body"><span class="c"># LLM Configuration</span>
+<span class="k">LLM_MODEL</span>=gemini/gemini-2.0-flash
+<span class="k">LLM_API_KEY</span>=your-api-key-here
+
+<span class="c"># Image Generation (optional)</span>
+<span class="k">GEMINI_API_KEY</span>=your-gemini-key
+
+<span class="c"># Database Connections (defaults work with docker compose)</span>
+<span class="k">GRAPH_DATABASE_URL</span>=bolt://localhost:7687
+<span class="k">GRAPH_DATABASE_PASSWORD</span>=cortexbrain_dev
+<span class="k">REDIS_URL</span>=redis://localhost:6379/0
+<span class="k">POSTGRES_URL</span>=postgresql+asyncpg://cortexbrain:cortexbrain_dev@localhost:5432/cortexbrain
+
+<span class="c"># Celery (uses Redis)</span>
+<span class="k">CELERY_BROKER_URL</span>=redis://localhost:6379/1
+<span class="k">CELERY_RESULT_BACKEND</span>=redis://localhost:6379/2</div>
+    </div>
+
+    <p>See <a href="#env-vars">full environment variable reference</a> for tuning activation thresholds, decay rates, and token budgets.</p>
+
+
+    <!-- ====== FIRST RUN ====== -->
+    <h2 id="first-run">First Run &mdash; Quick Start</h2>
+    <p>Once installation is complete, test the full pipeline end-to-end:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash — end-to-end test</span></div>
+      <div class="code-body"><span class="c"># 1. Health check</span>
+curl -s localhost:8000/api/v1/health | python3 -m json.tool
+
+<span class="c"># 2. Ingest your first document</span>
+curl -s -X POST localhost:8000/api/v1/ingest \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -F <span class="s">"files=@README.md"</span> \
+  -F <span class="s">"dataset_name=getting-started"</span> \
+  | python3 -m json.tool
+
+<span class="c"># 3. Ask a question</span>
+curl -s -X POST localhost:8000/api/v1/query \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{"query":"What is CortexBrain?","user_id":"me"}'</span> \
+  | python3 -m json.tool
+
+<span class="c"># 4. You'll get an answer with confidence score and sources!</span></div>
+    </div>
+
+
+    <!-- ====== INGESTING KNOWLEDGE ====== -->
+    <h2 id="ingest">Ingesting Knowledge</h2>
+    <p>CortexBrain learns from your organization's documents. Upload files, paste text, or batch-process entire directories. All content is processed through Cognee's ECL (Extract, Cognify, Load) pipeline, which extracts entities and relationships into a knowledge graph.</p>
+
+    <h3 id="ingest-files">File Upload (Synchronous)</h3>
+    <p>Upload PDF, Markdown, or plain text files. The system processes them immediately and returns when complete.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Upload a single file</span>
+curl -s -X POST http://localhost:8000/api/v1/ingest \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -F <span class="s">"files=@docs/runbook.md"</span> \
+  -F <span class="s">"dataset_name=internal-docs"</span> \
+  -F <span class="s">"source_type=document"</span> \
+  | python3 -m json.tool
+
+<span class="c"># Upload multiple files at once</span>
+curl -s -X POST http://localhost:8000/api/v1/ingest \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -F <span class="s">"files=@docs/architecture.md"</span> \
+  -F <span class="s">"files=@docs/runbook.md"</span> \
+  -F <span class="s">"dataset_name=internal-docs"</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+    <div class="callout callout-info">
+      <svg class="callout-icon" fill="none" stroke="#3b82f6" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div><strong style="color:#60a5fa;">Dataset naming:</strong> Use hyphens or underscores in dataset names. Spaces and dots are not supported. Examples: <code>internal-docs</code>, <code>runbook_v2</code>, <code>onboarding</code>.</div>
+    </div>
+
+    <h3 id="ingest-text">Direct Text Ingestion</h3>
+    <p>Ingest text directly via API &mdash; ideal for Slack bots, CLI tools, or MCP integrations.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body">curl -s -X POST http://localhost:8000/api/v1/ingest/text \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{
+    "text": "The auth service runs on port 3000. Updated after Q1 migration.",
+    "dataset_name": "team-knowledge",
+    "source_type": "manual"
+  }'</span> | python3 -m json.tool</div>
+    </div>
+
+    <h3 id="ingest-batch">Batch Processing (Async)</h3>
+    <p>For large document sets, use batch ingestion. Files are queued and processed in the background via Celery.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Submit files for background processing</span>
+curl -s -X POST http://localhost:8000/api/v1/ingest/batch \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -F <span class="s">"files=@docs/runbook-v1.md"</span> \
+  -F <span class="s">"files=@docs/runbook-v2.md"</span> \
+  -F <span class="s">"files=@docs/incident-report.pdf"</span> \
+  -F <span class="s">"dataset_name=project-docs"</span> \
+  | python3 -m json.tool
+
+<span class="c"># Response: {"status":"queued","task_id":"abc123-..."}</span>
+
+<span class="c"># Poll for completion</span>
+curl -s http://localhost:8000/api/v1/ingest/batch/<span class="v">{task_id}</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+    <div class="callout callout-warn">
+      <svg class="callout-icon" fill="none" stroke="#f59e0b" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z"/></svg>
+      <div><strong style="color:#fbbf24;">Requires Celery worker:</strong> Batch ingestion won't process unless a Celery worker is running. Start one with <code>celery -A cortexbrain.workers.celery_app worker --loglevel=info</code>.</div>
+    </div>
+
+
+    <!-- ====== QUERYING ====== -->
+    <h2 id="querying">Querying the Knowledge Base</h2>
+    <p>Queries run through a 10-step pipeline: entity extraction &rarr; graph lookup &rarr; spreading activation &rarr; confidence gating &rarr; LLM generation. You get an answer with confidence score, source attribution, and token usage.</p>
+
+    <h3 id="query-basic">Basic Query</h3>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body">curl -s -X POST http://localhost:8000/api/v1/query \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{
+    "query": "What port does the auth service run on?",
+    "user_id": "priya"
+  }'</span> | python3 -m json.tool</div>
+    </div>
+
+    <h4>Response structure</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">json</span></div>
+      <div class="code-body">{
+  <span class="k">"answer"</span>: <span class="s">"The auth service runs on port 3000..."</span>,
+  <span class="k">"confidence"</span>: <span class="s">"high"</span>,
+  <span class="k">"confidence_score"</span>: <span class="v">0.92</span>,
+  <span class="k">"sources"</span>: [
+    { <span class="k">"node_id"</span>: <span class="s">"..."</span>, <span class="k">"source_name"</span>: <span class="s">"Auth Service Config"</span>, <span class="k">"confidence"</span>: <span class="v">0.95</span> }
+  ],
+  <span class="k">"tokens_used"</span>: { <span class="k">"input"</span>: <span class="v">320</span>, <span class="k">"output"</span>: <span class="v">85</span> },
+  <span class="k">"fallback"</span>: <span class="v">false</span>
+}</div>
+    </div>
+
+    <h3 id="query-sessions">Session Continuity</h3>
+    <p>Pass a <code>session_id</code> to maintain activation context across multiple queries. Previously activated nodes retain partial activation, making follow-up queries faster and more relevant.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># First query — seeds activation for "metacognition" nodes</span>
+curl -s -X POST http://localhost:8000/api/v1/query \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{"query":"What is the metacognition layer?","user_id":"priya","session_id":"my-session"}'</span> \
+  | python3 -m json.tool
+
+<span class="c"># Follow-up — benefits from existing activation scores</span>
+curl -s -X POST http://localhost:8000/api/v1/query \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{"query":"How does confidence gating work?","user_id":"priya","session_id":"my-session"}'</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+    <h3 id="query-confidence">Understanding Confidence Levels</h3>
+    <p>Every response includes a confidence level that tells you how reliable the answer is:</p>
+
+    <table>
+      <thead><tr><th>Level</th><th>Score</th><th>What it means</th></tr></thead>
+      <tbody>
+        <tr><td><span style="color:#10b981; font-weight:700;">HIGH</span></td><td>&ge; 0.8</td><td>Answer is well-supported by multiple sources or human corrections. Safe to trust.</td></tr>
+        <tr><td><span style="color:#f59e0b; font-weight:700;">MEDIUM</span></td><td>0.5 &ndash; 0.8</td><td>Answer has some support but may need verification. Response includes a qualifier.</td></tr>
+        <tr><td><span style="color:#ef4444; font-weight:700;">LOW</span></td><td>&lt; 0.5</td><td>Limited data available. Treat with caution. System suggests verification.</td></tr>
+        <tr><td><span style="color:#a855f7; font-weight:700;">CONFLICTED</span></td><td>Flagged</td><td>Multiple sources disagree. All conflicting versions are shown for you to resolve.</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== CORRECTIONS ====== -->
+    <h2 id="corrections">Submitting Corrections</h2>
+    <p>This is CortexBrain's core differentiator. When you correct a fact, it <strong>persists forever</strong> &mdash; the old value is archived with a <code>PREVIOUS_VERSION</code> edge, the new value becomes active, and an audit record is created.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body">curl -s -X POST http://localhost:8000/api/v1/correct \
+  -H <span class="s">"Content-Type: application/json"</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  -d <span class="s">'{
+    "node_id": "00000000-0000-0000-0000-000000000001",
+    "corrected_value": "The auth service runs on port 3000, not 8080",
+    "user_id": "priya",
+    "reason": "Updated after Q1 migration"
+  }'</span> | python3 -m json.tool</div>
+    </div>
+
+    <h4>What happens when you correct</h4>
+    <ol>
+      <li><strong>Locate:</strong> The node is found in the knowledge graph (or created if new).</li>
+      <li><strong>Version:</strong> Current state is archived as a <code>PREVIOUS_VERSION</code> edge &mdash; nothing is lost.</li>
+      <li><strong>Mutate:</strong> Node is updated with the correction. Confidence is set to 0.95. Node is flagged as <code>volatile: true</code>.</li>
+      <li><strong>Meta-Update:</strong> Audit record is created in PostgreSQL. Original source confidence is adjusted.</li>
+      <li><strong>Re-index:</strong> Corrected text is re-embedded in the vector store.</li>
+    </ol>
+
+    <p>From this moment, <strong>every user</strong> who asks the same question gets the corrected answer.</p>
+
+
+    <!-- ====== AUDIT TRAIL ====== -->
+    <h2 id="audit">Audit Trail</h2>
+    <p>Every fact in CortexBrain has a complete version history. See who changed what, when, and why.</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Get full version history for a node</span>
+curl -s http://localhost:8000/api/v1/nodes/<span class="v">{node_id}</span>/history \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+    <h4>Response example</h4>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">json</span></div>
+      <div class="code-body">[
+  { <span class="k">"version"</span>: <span class="v">2</span>, <span class="k">"value"</span>: <span class="s">"Port 3000"</span>,
+    <span class="k">"changed_by"</span>: <span class="s">"user:priya"</span>,
+    <span class="k">"reason"</span>: <span class="s">"Updated after Q1 migration"</span>,
+    <span class="k">"timestamp"</span>: <span class="s">"2026-03-15T14:32:00Z"</span> },
+  { <span class="k">"version"</span>: <span class="v">1</span>, <span class="k">"value"</span>: <span class="s">"Port 8080"</span>,
+    <span class="k">"changed_by"</span>: <span class="s">"system:ingestion"</span>,
+    <span class="k">"timestamp"</span>: <span class="s">"2026-03-01T09:00:00Z"</span> }
+]</div>
+    </div>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash — inspect a node</span></div>
+      <div class="code-body"><span class="c"># Get node details including confidence, salience, and access count</span>
+curl -s http://localhost:8000/api/v1/nodes/<span class="v">{node_id}</span> \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+
+    <!-- ====== MCP INTEGRATION ====== -->
+    <h2 id="mcp">MCP Integration</h2>
+    <p>CortexBrain ships as an MCP (Model Context Protocol) server. This lets AI coding tools like Claude Code, Codex, Cursor, and Windsurf connect to your organization's persistent knowledge brain.</p>
+
+    <h3 id="mcp-claude">Setting up with Claude Code</h3>
+    <p>Add CortexBrain to your project's <code>.mcp.json</code>:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">.mcp.json</span></div>
+      <div class="code-body">{
+  <span class="k">"cortexbrain"</span>: {
+    <span class="k">"command"</span>: <span class="s">"python3"</span>,
+    <span class="k">"args"</span>: [<span class="s">"-m"</span>, <span class="s">"cortexbrain.mcp"</span>]
+  }
+}</div>
+    </div>
+    <p>Every Claude Code session will now have access to your organization's knowledge via the 6 built-in MCP tools.</p>
+
+    <h3 id="mcp-other">Other MCP Clients</h3>
+    <p>You can also run the MCP server standalone and connect any MCP-compatible client:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body"><span class="c"># Start the MCP server (communicates via stdio)</span>
+python3 -m cortexbrain.mcp</div>
+    </div>
+
+    <h3 id="mcp-tools">Available MCP Tools</h3>
+
+    <table>
+      <thead><tr><th>Tool</th><th>What it does</th><th>Example usage</th></tr></thead>
+      <tbody>
+        <tr><td><code>cortexbrain_query</code></td><td>Search the knowledge base with confidence scoring</td><td>"What port does auth run on?"</td></tr>
+        <tr><td><code>cortexbrain_remember</code></td><td>Store new information persistently</td><td>"Remember: we migrated to port 3000"</td></tr>
+        <tr><td><code>cortexbrain_correct</code></td><td>Submit a versioned correction to a knowledge node</td><td>Fix wrong values in the graph</td></tr>
+        <tr><td><code>cortexbrain_search_sources</code></td><td>Browse available datasets and their content</td><td>List what knowledge sources exist</td></tr>
+        <tr><td><code>cortexbrain_consolidate</code></td><td>Trigger a memory consolidation cycle</td><td>Promote, archive, merge, compress nodes</td></tr>
+        <tr><td><code>cortexbrain_health</code></td><td>Check the health of all backing services</td><td>Verify Redis, Neo4j, PostgreSQL are up</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== REST API ====== -->
+    <h2 id="rest-api">REST API Reference</h2>
+    <p>Base URL: <code>http://localhost:8000/api/v1</code><br/>
+    Authentication: <code>Authorization: Bearer &lt;token&gt;</code></p>
+
+    <h3>Core Endpoints</h3>
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/query</code></td><td>Query with activation-based context selection</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/correct</code></td><td>Submit a versioned correction</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/ingest</code></td><td>Upload files (synchronous)</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/ingest/batch</code></td><td>Upload files (async via Celery)</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/ingest/text</code></td><td>Ingest text directly</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/ingest/text/async</code></td><td>Fire-and-forget text ingestion</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Audit &amp; Nodes</h3>
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/nodes/{node_id}</code></td><td>Node detail (graph + metadata combined)</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/nodes/{node_id}/history</code></td><td>Full version history</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/datasets</code></td><td>List all datasets</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/datasets/{name}/data</code></td><td>Browse data items in a dataset</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Management</h3>
+    <table>
+      <thead><tr><th>Method</th><th>Endpoint</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/health</code></td><td>Health check for all services</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/consolidation/run</code></td><td>Trigger memory consolidation</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/consolidation/status/{id}</code></td><td>Poll consolidation progress</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/consolidation/last-report</code></td><td>Last consolidation summary</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/workers/status</code></td><td>Celery worker dashboard</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/sessions/{id}/activations</code></td><td>View activation scores for a session</td></tr>
+        <tr><td><span class="method-badge method-post">POST</span></td><td><code>/api/v1/debug/salience-recompute</code></td><td>Manual salience recompute</td></tr>
+        <tr><td><span class="method-badge method-get">GET</span></td><td><code>/api/v1/debug/stats</code></td><td>System-wide debug stats</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== DASHBOARD ====== -->
+    <h2 id="dashboard">Admin Dashboard</h2>
+    <p>CortexBrain includes a full admin dashboard built with Next.js 16. It provides a visual interface for querying, ingestion, node inspection, and system monitoring.</p>
+
+    <h3>Starting the dashboard</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body">cd frontend
+npm install
+npm run dev
+
+<span class="c"># Dashboard is now at http://localhost:3000</span></div>
+    </div>
+
+    <h3>Dashboard pages</h3>
+    <table>
+      <thead><tr><th>Page</th><th>URL</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Query</strong></td><td><code>/query</code></td><td>Chat-like interface with confidence badges, inline corrections, source attribution, image display</td></tr>
+        <tr><td><strong>Ingest</strong></td><td><code>/ingest</code></td><td>Drag-and-drop file upload with sync/batch modes and pipeline visualization</td></tr>
+        <tr><td><strong>Nodes</strong></td><td><code>/nodes</code></td><td>Browse knowledge nodes, search by UUID, view top accessed/salient nodes</td></tr>
+        <tr><td><strong>Node Detail</strong></td><td><code>/nodes/[id]</code></td><td>Full node detail with version history timeline and correction dialog</td></tr>
+        <tr><td><strong>Debug</strong></td><td><code>/debug</code></td><td>System stats, activation viewer, salience recompute</td></tr>
+        <tr><td><strong>Workers</strong></td><td><code>/workers</code></td><td>Celery worker monitoring, active/queued tasks, beat schedule</td></tr>
+        <tr><td><strong>Health</strong></td><td><code>/health</code></td><td>Auto-refreshing service health (every 10s) with health history timeline</td></tr>
+        <tr><td><strong>Settings</strong></td><td><code>/settings</code></td><td>Configure API URL, API key, user ID. Test connection.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+      <svg class="callout-icon" fill="none" stroke="#10b981" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <div><strong style="color:#10b981;">First-time setup:</strong> Visit <code>/settings</code> first to configure your API URL (<code>http://localhost:8000</code>) and test the connection. Credentials are stored in localStorage.</div>
+    </div>
+
+
+    <!-- ====== WORKERS ====== -->
+    <h2 id="workers">Background Workers</h2>
+    <p>CortexBrain uses Celery with Redis as the message broker. Workers handle scheduled maintenance and async processing.</p>
+
+    <table>
+      <thead><tr><th>Task</th><th>Schedule</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td><code>decay_cycle_task</code></td><td>Every 30 seconds</td><td>Decrements activation scores in Redis. Evicts nodes at 0. Keeps active context fresh.</td></tr>
+        <tr><td><code>salience_recompute_task</code></td><td>Every 1 hour</td><td>Recalculates salience scores for all nodes based on access frequency, recency, corrections, and edges.</td></tr>
+        <tr><td><code>consolidation_task</code></td><td>Every 7 days</td><td>Promotes validated knowledge, archives stale nodes, merges duplicates, compresses version chains.</td></tr>
+        <tr><td><code>batch_ingestion_task</code></td><td>On demand</td><td>Processes queued document batches through Cognee's ECL pipeline.</td></tr>
+        <tr><td><code>text_ingestion_task</code></td><td>On demand</td><td>Async text ingestion for fire-and-forget use cases.</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== CONSOLIDATION ====== -->
+    <h2 id="consolidation">Memory Consolidation</h2>
+    <p>Consolidation is CortexBrain's self-maintenance system. It runs weekly (or on demand) and performs four operations:</p>
+
+    <ol>
+      <li><strong>Promote:</strong> Auto-learned knowledge (confidence 0.6) gets promoted to validated (0.75) if it has been accessed 3+ times or has 2+ high-confidence neighbors.</li>
+      <li><strong>Archive:</strong> Bottom 10% salience nodes that haven't been accessed in 90+ days are marked as <code>archived</code>. They remain in the graph but are excluded from activation.</li>
+      <li><strong>Merge:</strong> Duplicate entities (matching by normalized name + fuzzy match at threshold 0.85) are merged into a single node. All edges are re-pointed.</li>
+      <li><strong>Compress:</strong> Version chains longer than 5 entries are compressed to keep only the first and last versions, marking intermediates as <code>compressed</code>.</li>
+    </ol>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash — trigger manually</span></div>
+      <div class="code-body"><span class="c"># Trigger consolidation</span>
+curl -s -X POST http://localhost:8000/api/v1/consolidation/run \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  | python3 -m json.tool
+
+<span class="c"># Check last report</span>
+curl -s http://localhost:8000/api/v1/consolidation/last-report \
+  -H <span class="s">"Authorization: Bearer dev-test-key"</span> \
+  | python3 -m json.tool</div>
+    </div>
+
+
+    <!-- ====== HEALTH ====== -->
+    <h2 id="health">Health Monitoring</h2>
+    <p>The health endpoint checks all 5 backing services in real-time:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">bash</span></div>
+      <div class="code-body">curl -s http://localhost:8000/api/v1/health | python3 -m json.tool</div>
+    </div>
+
+    <table>
+      <thead><tr><th>Service</th><th>What's checked</th><th>If it fails</th></tr></thead>
+      <tbody>
+        <tr><td>Redis</td><td>PING command</td><td>Activation/decay stops; queries use graph-only fallback</td></tr>
+        <tr><td>Neo4j</td><td>Cypher query</td><td>Graph queries fail; vector-only fallback</td></tr>
+        <tr><td>PostgreSQL</td><td>SELECT 1</td><td>Audit logs and metadata unavailable</td></tr>
+        <tr><td>LanceDB</td><td>Collection list</td><td>Vector search unavailable; graph-only</td></tr>
+        <tr><td>LLM</td><td>Test prompt</td><td>Answers return from memory only (no LLM generation)</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== ARCHITECTURE ====== -->
+    <h2 id="architecture">Architecture</h2>
+    <p>CortexBrain <strong>extends</strong> Cognee open-source &mdash; it does not fork or reimplement. The four memory substrates model how the human brain stores and retrieves knowledge:</p>
+
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">architecture</span></div>
+      <div class="code-body">┌──────────────────────────────────────────────────────────────┐
+│  <span class="k">M_a</span>  Active Memory (Redis)                                  │
+│       Spreading activation — relevant knowledge lights up,  │
+│       irrelevant fades away. TTL 600s. Decay every 30s.     │
+├──────────────────────────────────────────────────────────────┤
+│  <span class="n">M_s</span>  Semantic Memory (Neo4j)                                │
+│       Knowledge graph — entities, relationships, versioned  │
+│       corrections with PREVIOUS_VERSION edges.              │
+├──────────────────────────────────────────────────────────────┤
+│  <span class="s">M_r</span>  Raw Memory (LanceDB via Cognee)                        │
+│       Vector embeddings — fallback when the graph hasn't    │
+│       connected the dots yet.                               │
+├──────────────────────────────────────────────────────────────┤
+│  <span class="v">M_meta</span>  Meta Memory (PostgreSQL)                            │
+│          Audit logs, confidence scores, salience, access    │
+│          counts, organizations, API keys.                   │
+└──────────────────────────────────────────────────────────────┘</div>
+    </div>
+
+    <h3>Query Pipeline (10 steps)</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">flow</span></div>
+      <div class="code-body">User Query
+    ↓
+<span class="v">1.</span> Cognee search (vector + graph) → entity extraction
+<span class="v">2.</span> Neo4j text search (direct graph for corrected nodes)
+<span class="v">3.</span> Entity extraction from results (capped at 20, deduped)
+<span class="v">4.</span> Spreading activation (BFS through Neo4j graph)
+<span class="v">5.</span> Enrich with M_meta (confidence, salience, conflicted)
+<span class="v">6.</span> Confidence gate (weighted average by activation scores)
+<span class="v">7.</span> Access tracking (record access for each activated node)
+<span class="v">8.</span> Image check → if visual query, call Gemini for image
+<span class="v">9.</span> LLM generation (activated nodes as context + confidence prefix)
+<span class="v">10.</span> Continuous learning fallback (if KB fails → auto-learn)
+    ↓
+Response with answer, confidence, sources, token usage</div>
+    </div>
+
+
+    <!-- ====== ALGORITHMS ====== -->
+    <h2 id="algorithms">Algorithms</h2>
+
+    <h3>Spreading Activation</h3>
+    <p>When a query arrives, the system identifies relevant nodes and spreads activation through the knowledge graph using BFS:</p>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">formula</span></div>
+      <div class="code-body"><span class="k">neighbor_activation</span> = source_activation × edge_weight × <span class="v">0.5</span> (dampening)
+
+Initial seed score: <span class="v">100.0</span>
+Threshold:          <span class="v">30</span>   (configurable via ACTIVATION_THRESHOLD)
+Max context:        <span class="v">2000</span> tokens (configurable via MAX_CONTEXT_TOKENS)
+Traversal:          BFS, skips archived nodes
+Fallback:           Vector search (M_r) if no graph matches</div>
+    </div>
+
+    <h3>Salience Scoring</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">formula</span></div>
+      <div class="code-body"><span class="k">Salience</span> = (access_freq × <span class="v">0.4</span>) + (recency × <span class="v">0.3</span>) + (correction_count × <span class="v">0.2</span>) + (edge_count × <span class="v">0.1</span>)
+
+Normalization caps: access=100, corrections=20, edges=50
+Recency: exponential decay over 7-day window
+New nodes: default salience <span class="v">0.5</span> for 7-day grace period</div>
+    </div>
+
+    <h3>Decay Cycle</h3>
+    <div class="code-block">
+      <div class="code-header"><span class="code-dot code-dot-r"></span><span class="code-dot code-dot-y"></span><span class="code-dot code-dot-g"></span><span class="code-lang">formula</span></div>
+      <div class="code-body">Every <span class="v">30s</span>: score -= DECAY_RATE (<span class="v">10</span>)
+Evict at <span class="v">0</span> from Redis (Neo4j untouched — no data loss)
+Idle session (>5 min): fully decayed, next query starts fresh</div>
+    </div>
+
+
+    <!-- ====== TROUBLESHOOTING ====== -->
+    <h2 id="troubleshooting">Troubleshooting</h2>
+
+    <h3>Common issues</h3>
+    <table>
+      <thead><tr><th>Problem</th><th>Cause</th><th>Fix</th></tr></thead>
+      <tbody>
+        <tr><td>Health check fails for Neo4j</td><td>Container not running</td><td><code>docker compose up -d neo4j</code></td></tr>
+        <tr><td><code>python: command not found</code></td><td>macOS uses <code>python3</code></td><td>Use <code>python3</code> instead of <code>python</code></td></tr>
+        <tr><td>Batch ingestion stuck at "queued"</td><td>No Celery worker running</td><td>Start worker: <code>celery -A cortexbrain.workers.celery_app worker</code></td></tr>
+        <tr><td>Dataset name error</td><td>Spaces or dots in name</td><td>Use hyphens or underscores: <code>my-dataset</code></td></tr>
+        <tr><td>Celery "future loop mismatch"</td><td>Using <code>new_event_loop()</code></td><td>Tasks must use <code>asyncio.run()</code></td></tr>
+        <tr><td>Ingestion times out via dashboard</td><td>Next.js proxy timeout</td><td>Set <code>experimental.proxyTimeout: 300000</code> in <code>next.config.ts</code></td></tr>
+        <tr><td>Docker build fails (apt-get 403)</td><td>Network issue with deb.debian.org</td><td>Use hybrid mode: Docker for infra, run app locally</td></tr>
+        <tr><td>Query returns no sources</td><td>No data ingested yet</td><td>Ingest documents first via <code>/api/v1/ingest</code></td></tr>
+        <tr><td>Low confidence on all answers</td><td>Insufficient data or missing corrections</td><td>Ingest more documents and submit corrections for key facts</td></tr>
+      </tbody>
+    </table>
+
+
+    <!-- ====== ENV VARS ====== -->
+    <h2 id="env-vars">Environment Variables</h2>
+
+    <h3>LLM &amp; API</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>LLM_MODEL</code></td><td><code>gemini/gemini-2.0-flash</code></td><td>LLM model via litellm (supports OpenAI, Anthropic, Gemini, etc.)</td></tr>
+        <tr><td><code>LLM_API_KEY</code></td><td>&mdash;</td><td>API key for your LLM provider</td></tr>
+        <tr><td><code>GEMINI_API_KEY</code></td><td>&mdash;</td><td>Google Gemini key for image generation (optional)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Database Connections</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>GRAPH_DATABASE_URL</code></td><td><code>bolt://localhost:7687</code></td><td>Neo4j connection URL</td></tr>
+        <tr><td><code>GRAPH_DATABASE_PASSWORD</code></td><td><code>cortexbrain_dev</code></td><td>Neo4j password</td></tr>
+        <tr><td><code>REDIS_URL</code></td><td><code>redis://localhost:6379/0</code></td><td>Redis for active memory</td></tr>
+        <tr><td><code>POSTGRES_URL</code></td><td><code>postgresql+asyncpg://...</code></td><td>PostgreSQL for meta memory</td></tr>
+        <tr><td><code>CELERY_BROKER_URL</code></td><td><code>redis://localhost:6379/1</code></td><td>Celery message broker</td></tr>
+        <tr><td><code>CELERY_RESULT_BACKEND</code></td><td><code>redis://localhost:6379/2</code></td><td>Celery result storage</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Activation &amp; Decay Tuning</h3>
+    <table>
+      <thead><tr><th>Variable</th><th>Default</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>ACTIVATION_THRESHOLD</code></td><td><code>30</code></td><td>Minimum activation score to include a node in context. Lower = more context, higher = more selective.</td></tr>
+        <tr><td><code>DAMPENING_FACTOR</code></td><td><code>0.5</code></td><td>How much activation decays per hop in BFS. Lower = faster decay = tighter context.</td></tr>
+        <tr><td><code>MAX_CONTEXT_TOKENS</code></td><td><code>2000</code></td><td>Maximum tokens to include in the LLM prompt from activated nodes.</td></tr>
+        <tr><td><code>DECAY_RATE</code></td><td><code>10</code></td><td>Score decrement per decay cycle.</td></tr>
+        <tr><td><code>DECAY_INTERVAL_SECONDS</code></td><td><code>30</code></td><td>How often the decay cycle runs.</td></tr>
+      </tbody>
+    </table>
+
+    <!-- Footer -->
+    <div style="margin-top: 80px; padding-top: 32px; border-top: 1px solid rgba(255,255,255,0.06); text-align: center; color: #6b7280; font-size: 13px;">
+      <p>CortexBrain Documentation &mdash; Built by <a href="https://www.linkedin.com/in/abhisek-bose/" target="_blank">Abhisek Bose</a></p>
+      <p style="margin-top: 8px;"><a href="index.html">&larr; Back to website</a></p>
+    </div>
+
+  </main>
+
+  <!-- Sidebar active state + mobile toggle -->
+  <script>
+    function toggleSidebar() {
+      document.getElementById('sidebar').classList.toggle('open');
+      document.getElementById('sidebarOverlay').classList.toggle('open');
+    }
+
+    // Active sidebar link on scroll
+    const sections = document.querySelectorAll('h1[id], h2[id], h3[id]');
+    const links = document.querySelectorAll('.sidebar-link');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          links.forEach(l => l.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+
+    // Close sidebar on link click (mobile)
+    links.forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 900) {
+          document.getElementById('sidebar').classList.remove('open');
+          document.getElementById('sidebarOverlay').classList.remove('open');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
