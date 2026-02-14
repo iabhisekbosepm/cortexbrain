@@ -4,6 +4,8 @@
 
 CortexBrain is a B2B AI knowledge system that gives organizations a persistent, self-correcting "internal brain." Built as an extension layer on top of [Cognee](https://github.com/topoteretes/cognee) open-source memory engine.
 
+![CortexBrain Architecture](images/cortex-brain-infographic.png)
+
 ---
 
 ## The Problem
