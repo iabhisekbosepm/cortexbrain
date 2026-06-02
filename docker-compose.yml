@@ -1,0 +1,202 @@
+services:
+  neo4j:
+    image: neo4j:5-community
+    container_name: cortexbrain-neo4j
+    hostname: neo4j
+    ports:
+      - "7474:7474"   # Browser
+      - "7687:7687"   # Bolt
+    environment:
+      NEO4J_AUTH: neo4j/cortexbrain_dev
+      NEO4J_PLUGINS: '["apoc"]'
+    volumes:
+      - neo4j_data:/data
+    healthcheck:
+      test: ["CMD", "cypher-shell", "-u", "neo4j", "-p", "cortexbrain_dev", "RETURN 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+
+  redis:
+    image: redis:7-alpine
+    container_name: cortexbrain-redis
+    hostname: redis
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 256mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: cortexbrain-postgres
+    hostname: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: cortexbrain
+      POSTGRES_USER: cortexbrain
+      POSTGRES_PASSWORD: cortexbrain_dev
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/init-db.sh:/docker-entrypoint-initdb.d/init-db.sh
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cortexbrain"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: cortexbrain-qdrant
+    hostname: qdrant
+    ports:
+      - "6333:6333"   # REST API
+      - "6334:6334"   # gRPC
+    volumes:
+      - qdrant_data:/qdrant/storage
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'echo > /dev/tcp/localhost/6333'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  cortexbrain:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortexbrain-api
+    hostname: cortexbrain
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env.docker
+    environment:
+      - PYTHONPATH=/app/src
+    depends_on:
+      neo4j:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+    command: uvicorn cortexbrain.main:app --host 0.0.0.0 --port 8000 --reload
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 45s
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortexbrain-worker
+    hostname: celery-worker
+    env_file:
+      - .env.docker
+    environment:
+      - PYTHONPATH=/app/src
+    depends_on:
+      redis:
+        condition: service_healthy
+      neo4j:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    command: celery -A cortexbrain.workers.celery_app worker --loglevel=info
+    volumes:
+      - ./src:/app/src
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortexbrain-beat
+    hostname: celery-beat
+    env_file:
+      - .env.docker
+    environment:
+      - PYTHONPATH=/app/src
+    depends_on:
+      redis:
+        condition: service_healthy
+    command: celery -A cortexbrain.workers.celery_app beat --loglevel=info
+    volumes:
+      - ./src:/app/src
+
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cortexbrain-mcp
+    hostname: mcp-server
+    ports:
+      - "8001:8001"
+    env_file:
+      - .env.docker
+    environment:
+      - PYTHONPATH=/app/src
+      - MCP_TRANSPORT=sse
+      - MCP_HOST=0.0.0.0
+      - MCP_PORT=8001
+      - CORTEXBRAIN_URL=http://cortexbrain:8000
+      - CORTEXBRAIN_API_KEY=test-key
+    depends_on:
+      cortexbrain:
+        condition: service_healthy
+    volumes:
+      - ./src:/app/src
+    command: python -m cortexbrain.mcp
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import socket; s = socket.create_connection(('127.0.0.1', 8001), 2); s.close()"]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 10s
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://api.cortexbrain.local
+    container_name: cortexbrain-app
+    hostname: frontend
+    ports:
+      - "3005:3000"
+    environment:
+      - API_INTERNAL_URL=http://cortexbrain:8000
+      - NEXT_PUBLIC_API_URL=http://api.cortexbrain.local
+    depends_on:
+      cortexbrain:
+        condition: service_healthy
+
+  proxy:
+    image: nginx:alpine
+    container_name: cortexbrain-proxy
+    hostname: proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - cortexbrain
+      - frontend
+      - neo4j
+
+volumes:
+  neo4j_data:
+  redis_data:
+  postgres_data:
+  qdrant_data:

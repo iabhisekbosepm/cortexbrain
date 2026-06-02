@@ -1,0 +1,78 @@
+ Q: Everything is working perfectly, but still claude code using own context memory instead of cortexbrain, to make it useful cortexbrian for claude code agents what changes need to do?                               
+                                                                                                                                                                                                                      
+Answer: Great question. Right now CortexBrain's MCP tools exist but Claude Code doesn't prefer them — it still defaults to its own context window and MEMORY.md. Here's what needs to change:                               
+                                                                                                                                                                                                                      
+  The Core Problem                                                                                                                                                                                                    
+                                                                                                                                                                                                                      
+  Claude Code treats CortexBrain as "optional tools I can call" rather than "my primary knowledge source." Three layers need work:                                                                                  
+                                                                                                                                                                                                                      
+  1. CLAUDE.md Directives (Immediate, highest impact)                                                                                                                                                                 
+                                                                                                                                                                                                                      
+  Add explicit instructions that make Claude Code query CortexBrain first:
+
+  ## CortexBrain Integration Rules
+  - ALWAYS query cortexbrain_query BEFORE answering domain/project questions
+  - ALWAYS use cortexbrain_remember to store new learnings, decisions, debugging insights
+  - When correcting knowledge, use cortexbrain_correct instead of just editing MEMORY.md
+  - Prefer CortexBrain over MEMORY.md for persistent project knowledge
+
+  2. Smarter MCP Tools (Code changes)
+
+  - Add a cortexbrain_auto_context tool that pre-loads relevant context for the current working directory/project
+  - Add a cortexbrain_learn tool that automatically captures what Claude Code discovers during coding sessions
+  - Improve cortexbrain_query to return richer, more structured results that Claude naturally trusts over its own generation
+
+  3. Claude Code Hooks (Configuration)
+
+  - Post-session hooks that auto-save session learnings to CortexBrain
+  - Pre-query hooks that inject CortexBrain context into the prompt
+
+
+  Q: Yes please but is it going to save the token use?                                                                                                                                                                   
+                                                                                                                                  
+⏺ Honest answer: it's a tradeoff, but net positive for repeated/knowledge-heavy work.                                                                                                                                 
+                                                                                                                                                                                                                      
+  Where it SAVES tokens:                                                                                                                                                                                            
+                                                                                                                                                                                                                      
+  - Eliminates re-exploration — Instead of 10+ file reads + greps to rediscover something Claude learned last session, one CortexBrain query returns it directly                                                    
+  - Smaller context window — Move detailed knowledge out of MEMORY.md (which is loaded into EVERY message) into CortexBrain (queried only when needed)                                                                
+  - Session bootstrap — New sessions don't need to re-read the whole codebase if CortexBrain already knows the architecture                                                                                           
+                                                                                                                                                                                                                      
+  Where it COSTS tokens:                                                                                                                                                                                            
+                                                                                                                                                                                                                    
+  - "Always query first" is wasteful — Querying CortexBrain for "fix this typo" is pointless overhead
+  - MCP tool round-trips — Each query/remember call adds ~200-500 tokens
+
+  The Smart Approach
+
+  Instead of "always query," make it conditional — only query CortexBrain for domain/architecture/history questions, not for direct coding tasks. Let me implement this properly.
+
+
+
+  ===============                                                                                                                                                                                                       
+                                                                                                                                                                                                                      
+  CLAUDE.md — Added "CortexBrain as Knowledge Source" section with clear rules for WHEN to query vs. code directly. This is loaded every message, so Claude Code will see these instructions and naturally use        
+  CortexBrain tools.                                                                                                                                                                                                  
+                                                                                                                                                                                                                    
+  MEMORY.md — Slimmed from 42 lines to 22 lines. Moved detailed Cognee internals to CortexBrain. Kept only:                                                                                                           
+  - Pointer to CortexBrain as primary source                                                                                                                                                                          
+  - Quick-reference stable facts                                                                                                                                                                                      
+  - Gotchas that save re-discovery (these pay for themselves in token savings)                                                                                                                                        
+
+  Token Math
+  ┌─────────────────────────────┬──────────────────────────────────┬───────────────────────────┐
+  │          Scenario           │              Before              │           After           │
+  ├─────────────────────────────┼──────────────────────────────────┼───────────────────────────┤
+  │ MEMORY.md per message       │ ~600 tokens                      │ ~300 tokens               │
+  ├─────────────────────────────┼──────────────────────────────────┼───────────────────────────┤
+  │ "How does activation work?" │ 5-8 file reads (~3000 tokens)    │ 1 query (~300 tokens)     │
+  ├─────────────────────────────┼──────────────────────────────────┼───────────────────────────┤
+  │ "Where is auth middleware?" │ grep + read (~800 tokens)        │ 1 query (~300 tokens)     │
+  ├─────────────────────────────┼──────────────────────────────────┼───────────────────────────┤
+  │ New session bootstrap       │ Re-read 10+ files (~5000 tokens) │ 2-3 queries (~900 tokens) │
+  └─────────────────────────────┴──────────────────────────────────┴───────────────────────────┘
+  Net: saves ~60-80% tokens on knowledge-retrieval tasks, costs ~300 tokens extra on simple coding tasks where it queries unnecessarily (but the CLAUDE.md rules minimize this).
+
+
+
+  Grab the knowledge of current project from cortexbrain

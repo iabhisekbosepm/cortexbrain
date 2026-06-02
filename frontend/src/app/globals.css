@@ -1,0 +1,64 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+:root {
+  --background: #f9fafb;
+  --foreground: #111827;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* CortexBrain copper palette — matches website/index.html */
+  --color-copper-50: #fef5f2;
+  --color-copper-100: #fde8e1;
+  --color-copper-200: #fbd0c3;
+  --color-copper-300: #f5a98e;
+  --color-copper-400: #e07c5a;
+  --color-copper-500: #C46849;
+  --color-copper-600: #a8553b;
+  --color-copper-700: #8c4530;
+  --color-copper-800: #743928;
+  --color-copper-900: #5f2f21;
+  --color-copper-950: #331810;
+
+  /* Dark palette from website */
+  --color-dark-900: #131314;
+  --color-dark-800: #1a1a1b;
+  --color-dark-700: #2a2a2b;
+  --color-dark-600: #3d3d3b;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+}
+
+/* Pulse animation for health dots */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #C46849;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #a8553b;
+}

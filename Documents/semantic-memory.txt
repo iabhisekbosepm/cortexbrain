@@ -1,0 +1,32 @@
+Consolidation batch job (compress episodic → semantic memory). Currently, auto-learned Q&A pairs sit at low confidence (0.6), stale nodes accumulate without cleanup,
+ duplicate entities exist from multiple ingestions, and long version chains grow unbounded. This feature adds a weekly background job that promotes, archives, merges, and compresses — keeping the knowledge graph
+ healthy and high-signal.
+
+ Five Consolidation Operations
+
+ 1. Promote — Auto-learned nodes (confidence=0.6) with access_count >= 3 or corroborated by document-sourced neighbors → promote to confidence=0.75
+ 2. Archive — Bottom 10% salience nodes not accessed in 90+ days → mark status: "archived", skip in activation spreading
+ 3. Merge — Near-duplicate entities (fuzzy name match >= 0.85) → merge into one, create MERGED_INTO edge
+ 4. Compress — Version chains > 5 PREVIOUS_VERSION edges → mark intermediates compressed: true, keep first + last + current
+ 5. Report — Summary logged to AuditLog as action: "consolidation:summary"
+
+
+
+ ⏺ Consolidation completed successfully! Here's the report:                                                                                                                                                            
+  ┌────────────┬──────────────────────────────────────────────────────┐                                                                                                                                               
+  │ Operation  │                        Result                        │                                                                                                                                               
+  ├────────────┼──────────────────────────────────────────────────────┤                                                                                                                                               
+  │ Promoted   │ 0 nodes (none met the access threshold yet)          │                                                                                                                                               
+  ├────────────┼──────────────────────────────────────────────────────┤                                                                                                                                               
+  │ Archived   │ 0 nodes (none old enough — 90 day threshold)         │                                                                                                                                             
+  ├────────────┼──────────────────────────────────────────────────────┤                                                                                                                                               
+  │ Merged     │ 34 merge groups found, 39 duplicate nodes deprecated │                                                                                                                                               
+  ├────────────┼──────────────────────────────────────────────────────┤
+  │ Compressed │ 0 version chains (none exceeded 5 versions)          │
+  ├────────────┼──────────────────────────────────────────────────────┤
+  │ Errors     │ 0                                                    │
+  ├────────────┼──────────────────────────────────────────────────────┤
+  │ Duration   │ ~7 seconds                                           │
+  └────────────┴──────────────────────────────────────────────────────┘
+  The merge operation found and cleaned up 39 duplicate entities across 34 groups — that's the most impactful operation on a fresh knowledge base. The promote/archive/compress operations will become active as the
+  system ages and accumulates more corrections and access patterns.

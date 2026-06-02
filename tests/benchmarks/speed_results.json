@@ -1,0 +1,79 @@
+{
+  "timestamp": "2026-02-14T13:20:34",
+  "threshold_ms": 30000.0,
+  "passed": false,
+  "overall_p95_ms": 33873.9,
+  "queries": {
+    "simple_entity": {
+      "label": "simple_entity",
+      "count": 3,
+      "p50_ms": 17017.4,
+      "p95_ms": 18702.3,
+      "p99_ms": 18852.1,
+      "mean_ms": 17433.1,
+      "stdev_ms": 1299.4,
+      "min_ms": 16392.4,
+      "max_ms": 18889.5
+    },
+    "multi_entity": {
+      "label": "multi_entity",
+      "count": 3,
+      "p50_ms": 22733.7,
+      "p95_ms": 26280.8,
+      "p99_ms": 26596.0,
+      "mean_ms": 23260.4,
+      "stdev_ms": 3183.9,
+      "min_ms": 20372.7,
+      "max_ms": 26674.9
+    },
+    "specific_detail": {
+      "label": "specific_detail",
+      "count": 3,
+      "p50_ms": 18145.2,
+      "p95_ms": 21733.9,
+      "p99_ms": 22052.9,
+      "mean_ms": 19266.7,
+      "stdev_ms": 2501.5,
+      "min_ms": 17522.3,
+      "max_ms": 22132.7
+    },
+    "broad_topic": {
+      "label": "broad_topic",
+      "count": 3,
+      "p50_ms": 23217.2,
+      "p95_ms": 26550.5,
+      "p99_ms": 26846.8,
+      "mean_ms": 24166.8,
+      "stdev_ms": 2423.1,
+      "min_ms": 22362.3,
+      "max_ms": 26920.9
+    },
+    "correction_flow": {
+      "label": "correction_flow",
+      "count": 3,
+      "p50_ms": 33329.7,
+      "p95_ms": 34962.3,
+      "p99_ms": 35107.4,
+      "mean_ms": 32499.4,
+      "stdev_ms": 3142.8,
+      "min_ms": 29024.7,
+      "max_ms": 35143.7
+    },
+    "__overall__": {
+      "label": "OVERALL (all queries)",
+      "count": 15,
+      "p50_ms": 22362.3,
+      "p95_ms": 33873.9,
+      "p99_ms": 34889.7,
+      "mean_ms": 23325.3,
+      "stdev_ms": 5830.1,
+      "min_ms": 16392.4,
+      "max_ms": 35143.7
+    }
+  },
+  "activation_modes": {
+    "spreading": 13,
+    "continuous_learning": 2
+  },
+  "fallback_rate": 0.13333333333333333
+}
